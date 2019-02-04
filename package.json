@@ -1,0 +1,34 @@
+{
+  "name": "dostaseabattle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dosta.js",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.3",
+    "cron": "^1.6.0",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "gm": "^1.23.1",
+    "moment": "^2.24.0",
+    "mysql2": "^1.6.4",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
+    "sequelize": "^4.42.0",
+    "serve-favicon": "^2.5.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rsergievsky/dostaSeaBattle.git"
+  },
+  "author": "ruslan sergievsky",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rsergievsky/dostaSeaBattle/issues"
+  },
+  "homepage": "https://github.com/rsergievsky/dostaSeaBattle#readme"
+}

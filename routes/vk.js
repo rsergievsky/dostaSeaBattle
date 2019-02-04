@@ -8,7 +8,7 @@ const env = require('../modules/env'),
 
 exports.callback = async function(req, res) {
 
-  res.send('ok');
+  res.send('30736b56');
 
   const e = req.body.object;
   const group_id = req.body.group_id;

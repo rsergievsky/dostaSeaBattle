@@ -1,29 +1,35 @@
 const env = require('../modules/env'),
       db = require('../modules/db'),
+      game = require('../modules/game'),
       rp = require('request-promise'),
       fs = require('fs'),
-      moment = require('moment'),
-      gm = require('gm').subClass({imageMagick: true});
+      moment = require('moment');
 
 
 exports.callback = async function(req, res) {
 
   res.send('ok');
 
-  console.log(req.body);
-
+  const type = req.body.type;
   const e = req.body.object;
+  const user_id = e.from_id;
   const group_id = req.body.group_id;
 
-  console.log(`${group_id}\n${JSON.stringify(e)}`);
+  if (type === 'wall_repost') {
 
-  const x = (e.text[0].match(/[а-иА-И]/ig) != null) ? e.text[0] : null;
-  const y = e.text.replace(/\D+/ig, '');
+    await env.onRepost(user_id);
 
-  if (x != null && y > 0 && y <= 10) {
-    /** generate pic */
+  } else if (type  === 'wall_reply_new' && user_id > 0) {
+
+    const x = (e.text[0].match(/[а-иА-И]/ig) != null) ? e.text[0] : null;
+    const y = e.text.replace(/\D+/ig, '');
+
+    if (x != null && y > 0 && y <= 10) {
+      env.addPlayer(user_id);
+      await game.makeMove(user_id, x, y);
+      /** generate pic */
+    }
   }
-
 }
 
 exports.reply = async function() {
@@ -31,10 +37,6 @@ exports.reply = async function() {
 }
 
 exports.getUserPic = async function(user_id) {
-
-}
-
-exports.checkRepost = async function(user_id) {
 
 }
 

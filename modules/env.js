@@ -24,9 +24,10 @@ module.exports = {
   },
   startGame: async function() {
     const [game] = await db.query(`SELECT * FROM fields ORDER BY id DESC LIMIT 1`);
-    const players = await db.query(`SELECT * FROM players`);
+    game.moves = JSON.parse(game.moves);
     this.game = game;
     this.players = {};
+    const players = await db.query(`SELECT * FROM players`);
     for (const player of players) {
       this.players[player.id] = {moves: player.moves, repost: player.repost};
     }
@@ -48,9 +49,9 @@ module.exports = {
     await db.query(`INSERT INTO fields (path, x, y, win, moves) VALUES("${path}", 0, 0, 0, "{}");`);
   },
   updateField: async function(x, y) {
+    if (x == this.game.x && y == this.game.y) await this.endGame();
     if (this.game.moves[x] == null) this.game.moves[x] = [];
     this.game.moves[x].push(y);
-    if (x == this.game.x && y == this.game.y) await this.endGame();
     const moves = JSON.stringify(this.game.moves);
     await db.query(`UPDATE fields SET moves="${moves}", win=${this.game.win} WHERE id=${this.game.id}`);
     return (this.game.win) ? 'pizza.png' : 'x.png';

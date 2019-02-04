@@ -28,7 +28,11 @@ exports.reply = async function() {
 
 }
 
-exports.getUserPic = async function() {
+exports.getUserPic = async function(user_id) {
+
+}
+
+exports.checkRepost = async function(user_id) {
 
 }
 

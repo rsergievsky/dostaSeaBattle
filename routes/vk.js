@@ -12,7 +12,7 @@ module.exports = {
 
     res.send('ok');
 
-    const { type:type, group_id:group_id, object:e } = req.body;
+    const { type:type, group_id:group2_id, object:e } = req.body;
 
     if (type === 'wall_repost') {
 

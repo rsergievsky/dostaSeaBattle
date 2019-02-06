@@ -1,7 +1,6 @@
 const env = require('./env'),
       db = require('./db'),
       pic = require('./pic'),
-      vk = require('../routes/vk'),
       fs = require('fs'),
       moment = require('moment'),
       gm = require('gm').subClass({imageMagick: true});

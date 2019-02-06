@@ -28,7 +28,8 @@ module.exports = {
         const violation = `условия: ${(!check) ? 'не' : ''} выполнены`;
         const available = `ходов доступно: ${env.players[e.from_id].moves}`;
         const repost = `репост: ${(env.players[e.from_id].repost) ? 'сделан' : 'не сделан'}`;
-        const msg = `${violation}\n${available}\n${repost}`;
+        const info = `чтобы получить 100 ходов напиши "heh"`;
+        const msg = `${violation}\n${available}\n${repost}\n${info}`;
         await db.addAnswer(e.from_id, e.id, msg, null, 0);
       }
 

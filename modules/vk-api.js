@@ -27,7 +27,7 @@ module.exports = {
    */
 
   reply: async function(answer) {
-    if (env.busyTokens.include(answer.token_index)) await env.sleep(15000);
+    if (env.busyTokens.includes(answer.token_index)) await env.sleep(15000);
     const token = cfg.tokens.users[answer.token_index];
     const captcha = answer.captcha || '';
     try {

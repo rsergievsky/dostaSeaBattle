@@ -20,7 +20,6 @@ main = async() => {
     cron.on();
     const game = require('./modules/game');
     await game.startGame();
-    await require('./routes/vk').getUserName(1);
   });
 }
 

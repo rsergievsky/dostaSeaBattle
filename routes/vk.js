@@ -26,7 +26,7 @@ module.exports = {
       } else if (env.players[e.from_id] != null && e.text.match(/status/ig) != null) {
         const check = await require('../modules/vk-api').checkPlayer(e.from_id);
         const violation = `условия: ${(!check) ? 'не' : ''} выполнены`;
-        const available = `ходов доступно: ${env.players[e.from.id].moves}`;
+        const available = `ходов доступно: ${env.players[e.from_id].moves}`;
         const repost = `репост: ${(env.players[e.from_id].repost) ? 'сделан' : 'не сделан'}`;
         const msg = `${violation}\n${available}\n${repost}`;
         await db.query(`INSERT INTO answers(user_id, comment_id, message, attachments, token_index) VALUES(${e.from_id}, ${e.id}, "${msg}", "", ${cfg.tokens.users[0]})`);

@@ -4,8 +4,8 @@ const db = require('../modules/db'),
 
 module.exports = {
   dosta: true,
-  groupID: 0,
-  postID: 0,
+  groupID: 160258026,
+  postID: 777,
   answerCD: 5,
   tokenIndex: -1,
   game: {id:0, path:'', x:0, y:0, moves:{}, win:0},

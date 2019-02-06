@@ -28,7 +28,8 @@ module.exports = {
       if (x != null && y > 0 && y <= 10) {
         await game.addPlayer(e.from_id);
         const move = await game.makeMove(e.from_id, x, y);
-        await db.query(`INSERT INTO answers(user_id, comment_id, message, attachments, token_index) VALUES(${e.from_id}, ${e.id}, "${move.msg}", "${move.pic}", ${move.tokenIndex})`);
+        const data = await this.upload(env.game.path);
+        await db.query(`INSERT INTO answers(user_id, comment_id, message, attachments, token_index) VALUES(${e.from_id}, ${e.id}, "${move.msg}", "${data.pic}", ${data.tokenIndex})`);
       }
     }
   },

@@ -16,8 +16,8 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       const anticaptcha = Anticaptcha(key);
 
-      const captcha = await rp(captcha.captcha_img, {encoding: null});
-      const img = new Buffer.from(captcha).toString('base64');
+      const captchaPic = await rp(captcha.captcha_img, {encoding: null});
+      const img = new Buffer.from(captchaPic).toString('base64');
 
       anticaptcha.setLanguagePool('en');
       anticaptcha.createTask(function (err, taskId) {

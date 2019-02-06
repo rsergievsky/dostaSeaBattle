@@ -38,6 +38,7 @@ module.exports = {
       if (res.error == null || res.error.error_code == '100') return true;
       else if (res.error.error_code == '14') {
         console.log(`[${answer.token_index}] captcha blyad!`);
+        console.log(res.error);
         answer.captcha = await anticaptcha.solveCaptcha(res.error);
         return this.reply(answer);
       } else {

@@ -18,10 +18,12 @@ module.exports = {
 
     if (env.players[id].moves === 0) {
       /** reply that player has no moves */
+      console.log(env.answers.no_enough_moves);
       const tokenIndex = env.getTokenIndex();
       return {msg:env.answers.no_enough_moves, tokenIndex:tokenIndex};
     } else if (env.game.moves != null && env.game.moves[x] != null && env.game.moves[x].includes(y)) {
       /** reply that move already exist */
+      console.log(env.answers.busy);
       const tokenIndex = env.getTokenIndex();
       return {msg:env.answers.busy, tokenIndex:tokenIndex};
     } else {
@@ -65,14 +67,12 @@ module.exports = {
     }
   },
   addPlayer: async function(id) {
-    return new Promise(async (resolve, reject) => {
-      if (env.players[id] != null) return;
-      env.players[id] = {moves: 1, repost: 0};
-      try {
-        await db.query(`INSERT INTO players (id, moves, repost) VALUES(${id}, 1, 0);`);
-        return resolve();
-      } catch(err) { console.log(err); return reject() }
-    });
+    if (env.players[id] != null) return;
+    env.players[id] = {moves: 1, repost: 0};
+    try {
+      await db.query(`INSERT INTO players (id, moves, repost) VALUES(${id}, 1, 0);`);
+      return;
+    } catch(err) { console.log(err); }
   },
   handleRepost: async function(id) {
     if (env.players[id] == null) {

@@ -21,9 +21,9 @@ main = async() => {
     const game = require('./modules/game');
     await game.startGame();
     await game.addPlayer(1);
-    await game.makeMove(1, 'В', 4);
-    await game.makeMove(1, 'З', 3);
-    await game.makeMove(1, 'К', 10);
+    // await game.makeMove(1, 'В', 4);
+    // await game.makeMove(1, 'З', 3);
+    // await game.makeMove(1, 'К', 10);
   });
 }
 

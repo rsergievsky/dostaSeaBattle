@@ -87,6 +87,7 @@ module.exports = {
     await db.query(`UPDATE games SET win=1 WHERE id=${env.game.id};`);
     await db.query(`UPDATE players SET moves=1 WHERE repost=0`);
     await db.query(`UPDATE players SET moves=2 WHERE repost=1`);
+    await vk.restartAlert();
   },
   createField: async function() {
     const folder = `${process.env.PWD}/public/fields`;

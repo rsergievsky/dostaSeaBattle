@@ -16,7 +16,8 @@ module.exports = {
     miss: 'промах',
     busy: 'уже попали',
     no_enough_moves: 'нет ходов',
-    win: 'победа епта'
+    win: 'победа епта',
+    restart: 'игра окончена. начинаем новый раунд'
   },
   catpchas: [],
   getTokenIndex: function() {

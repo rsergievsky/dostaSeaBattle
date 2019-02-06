@@ -29,7 +29,7 @@ module.exports = {
         const available = `ходов доступно: ${env.players[e.from_id].moves}`;
         const repost = `репост: ${(env.players[e.from_id].repost) ? 'сделан' : 'не сделан'}`;
         const msg = `${violation}\n${available}\n${repost}`;
-        await db.query(`INSERT INTO answers(user_id, comment_id, message, attachments, token_index) VALUES(${e.from_id}, ${e.id}, "${msg}", "", 0)`);
+        await db.addAnswer(e.from_id, e.id, msg, null, 0);
       }
 
       const x = (e.text[0].match(/[а-кА-К]/ig) != null) ? e.text[0] : null;
@@ -40,7 +40,7 @@ module.exports = {
       if (x != null && y > 0 && y <= 10) {
         await game.addPlayer(e.from_id);
         const move = await game.makeMove(e.from_id, x, y);
-        await db.query(`INSERT INTO answers(user_id, comment_id, message, attachments, token_index) VALUES(${e.from_id}, ${e.id}, "${move.msg}", "${move.pic || ''}", ${move.tokenIndex})`);
+        await db.addAnswer(e.from_id, e.id, move.msg, move.pic, move.tokenIndex);
       }
     }
   }

@@ -27,8 +27,8 @@ module.exports = {
       });
     });
   },
-  addAnswer: async function(move) {
-
+  addAnswer: async function(user_id, comment_id, msg, pic, tokenIndex) {
+    await this.query(`INSERT INTO answers(user_id, comment_id, message, attachments, token_index) VALUES(${user_id}, ${comment_id}, "${msg}", "${pic || ''}", ${tokenIndex})`);
   },
   init: async function() {
     await sequelize.authenticate();

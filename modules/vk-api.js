@@ -27,18 +27,17 @@ module.exports = {
    */
 
   reply: async function(answer) {
+    if (env.busyTokens.include(answer.token_index)) await env.sleep(15000);
     const token = cfg.tokens.users[answer.token_index];
     const captcha = answer.captcha || '';
     try {
-      const options = {
-        uri: `https://api.vk.com/method/wall.createComment?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(answer.message)}&from_group=${env.groupID}&attachments=${answer.attachments}&reply_to_comment=${answer.comment_id}&access_token=${token}${captcha}&v=5.92`,
-        family: 4
-      };
-      const res = JSON.parse(await rp.get(options));
+      const res = JSON.parse(await rp.get(`https://api.vk.com/method/wall.createComment?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(answer.message)}&from_group=${env.groupID}&attachments=${answer.attachments}&reply_to_comment=${answer.comment_id}&access_token=${token}${captcha}&v=5.92`));
       if (res.error == null || res.error.error_code == '100') return true;
       else if (res.error.error_code == '14') {
         console.log(`[${answer.token_index}] captcha blyad!`);
+        env.busyTokens[answer.token_index] = answer.token_index;
         answer.captcha = await anticaptcha.solveCaptcha(res.error);
+        delete env.busyTokens[answer.token_index];
         return this.reply(answer);
       } else {
         console.log(res.error.error_msg);
@@ -52,6 +51,9 @@ module.exports = {
   checkPlayer: async function(user_id) {
     /** todo is member */
     /** todo is like */
+    const isMember = await rp.get(`https://api.vk.com/method/groups.isMember?group_id=${env.groupID}&user_id=${user_id}&access_token=${cfg.tokens.group}&v=5.92`);
+    console.log(isMember);
+    const isLiked = await rp.get(`https://api.vk.com/method/groups.isMember?group_id=${env.groupID}&user_id=${user_id}&access_token=${cfg.tokens.group}&v=5.92`);
   },
   getUserName: async function(user_id) {
     console.log('no');

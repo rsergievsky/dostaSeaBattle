@@ -12,10 +12,10 @@ module.exports = {
   game: {id:0, path:'', x:0, y:0, moves:{}, win:0},
   players: {},
   answers: {
-    miss: 'answer for miss',
-    busy: 'answer for busy',
-    no_enough_moves: 'answer for no enough moves',
-    win: 'answer for win'
+    miss: 'промах',
+    busy: 'уже попали',
+    no_enough_moves: 'нет ходов',
+    win: 'победа епта'
   },
   catpchas: [],
   getTokenIndex: function() {

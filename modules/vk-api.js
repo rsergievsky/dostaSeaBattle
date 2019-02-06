@@ -55,6 +55,7 @@ module.exports = {
     console.log(isMember);
     const isLiked = JSON.parse(await rp.get(`https://api.vk.com/method/likes.isLiked?type=post&user_id=${user_id}&owner_id=${-env.groupID}&item_id=${env.postID}&count=1000&access_token=${cfg.tokens.users[0]}&v=5.92`));
     console.log(isLiked);
+    return (isMember && isLiked) ? true : false;
   },
   getUserName: async function(user_id) {
     console.log('no');

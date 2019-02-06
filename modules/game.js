@@ -15,18 +15,18 @@ module.exports = {
 
     if (env.game.win) await this.startGame();
 
+    const tokenIndex = env.getTokenIndex();
+
     const check = await vk.checkPlayer(id);
     if (check) {
       return {msg:env.answers.violation, tokenIndex:tokenIndex};
     } else if (env.players[id].moves === 0) {
       /** reply that player has no moves */
       console.log(env.answers.no_enough_moves);
-      const tokenIndex = env.getTokenIndex();
       return {msg:env.answers.no_enough_moves, tokenIndex:tokenIndex};
     } else if (env.game.moves != null && env.game.moves[x] != null && env.game.moves[x].includes(y)) {
       /** reply that move already exist */
       console.log(env.answers.busy);
-      const tokenIndex = env.getTokenIndex();
       return {msg:env.answers.busy, tokenIndex:tokenIndex};
     } else {
 
@@ -41,9 +41,9 @@ module.exports = {
       await db.query(`UPDATE games SET moves="${moves}", win=${env.game.win} WHERE id=${env.game.id}`);
 
       await pic.addMoveToField(x, y, moveResult);
-      const data = await vk.upload(env.game.path);
+      const pic = await vk.upload(env.game.path);
 
-      return {msg: env.answers[moveResult], ...data};
+      return {msg: env.answers[moveResult], tokenIndex: tokenIndex, pic: pic};
     }
   },
   checkMove: function(x, y) {

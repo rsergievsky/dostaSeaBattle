@@ -62,8 +62,7 @@ module.exports = {
   },
   upload: async function(path) {
 
-    const tokenIndex = env.getTokenIndex();
-    const token = cfg.tokens.users[tokenIndex];
+    const token = cfg.tokens.users[env.tokenIndex];
 
     await env.sleep(1000);
     /** group_id should be a positive number */
@@ -95,6 +94,6 @@ module.exports = {
     }
 
     const {response: [photo]} = res;
-    return {tokenIndex:tokenIndex, pic:`photo${photo.owner_id}_${photo.id}`};
+    return `photo${photo.owner_id}_${photo.id}`;
   }
 }

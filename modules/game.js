@@ -1,6 +1,6 @@
 const env = require('./env'),
       db = require('./db'),
-      rp = require('request-promise'),
+      pic = require('./pic'),
       vk = require('../routes/vk'),
       fs = require('fs'),
       moment = require('moment'),
@@ -42,28 +42,10 @@ module.exports = {
       const moves = JSON.stringify(env.game.moves).replace(/"/g, '\\"');
       await db.query(`UPDATE games SET moves="${moves}", win=${env.game.win} WHERE id=${env.game.id}`);
 
-      return new Promise(async (resolve, reject) => {
-        console.time('pic');
-        gm()
-            .in('-page', '+0+0')
-            .in(env.game.path)
-            .in('-page', `+${217+(108*(x - 1))}+${172+(108*(y - 1))}`)
-            .in(`public/fields/${moveResult}.png`)
-            .mosaic()
-            .write(env.game.path, async (err) => {
-              console.log(err);
-              if (!err) {
-                const data = await vk.upload(env.game.path);
-                return resolve({
-                  user_id:id,
-                  msg:env.answers[moveResult],
-                  ...data
-                });
-              }
-              else return reject(new Error('error while writing field pic'));
-            });
-        console.timeEnd('pic');
-      });
+      await pic.addMoveOnField(x, y, moveResult);
+      const data = await vk.upload(env.game.path);
+
+      return {msg: env.answers[moveResult], ...data};
     }
   },
   addPlayer: async function(id) {

@@ -32,6 +32,8 @@ module.exports = {
             return reject();
           }
 
+          console.log(taskSolution);
+
           return resolve(`&captcha_sid=${captcha.captcha_sid}&captcha_key=${taskSolution}`);
         });
       }, 'ImageToTextTask', {body: img});

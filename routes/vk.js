@@ -26,6 +26,8 @@ module.exports = {
       const x = (e.text[0].match(/[а-иА-И]/ig) != null) ? e.text[0] : null;
       const y = e.text.replace(/\D+/ig, '');
 
+      console.log(x, y);
+
       if (x != null && y > 0 && y <= 10) {
         await game.addPlayer(e.from_id);
         const move = await game.makeMove(group_id, e.from_id, x, y);

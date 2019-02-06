@@ -3,8 +3,7 @@ const env = require('./env'),
       pic = require('./pic'),
       vk = require('./vk-api'),
       fs = require('fs'),
-      moment = require('moment'),
-      gm = require('gm').subClass({imageMagick: true});
+      moment = require('moment');
 
 const xMoves = ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'К'];
 
@@ -13,7 +12,6 @@ module.exports = {
 
     // x = x.toUpperCase().charCodeAt(0) - 1039;
     x = xMoves.indexOf(x.toUpperCase()) + 1;
-
 
     if (env.game.win) await this.startGame();
 
@@ -29,25 +27,27 @@ module.exports = {
       return {msg:env.answers.busy, tokenIndex:tokenIndex};
     } else {
 
-      let moveResult = 'miss';
+      const moveResult = this.checkMove(x, y);
 
       env.players[id].moves--;
       await db.query(`UPDATE players SET moves=moves-1 WHERE id=${id}`);
 
-      if (x == env.game.x && y == env.game.y) {
-        moveResult = 'win';
-        await this.endGame();
-      }
       if (env.game.moves == null || env.game.moves[x] == null) env.game.moves[x] = [];
       env.game.moves[x].push(y);
       const moves = JSON.stringify(env.game.moves).replace(/"/g, '\\"');
       await db.query(`UPDATE games SET moves="${moves}", win=${env.game.win} WHERE id=${env.game.id}`);
 
-      await pic.addMoveOnField(x, y, moveResult);
+      await pic.addMoveToField(x, y, moveResult);
       const data = await vk.upload(env.game.path);
 
       return {msg: env.answers[moveResult], ...data};
     }
+  },
+  checkMove: function(x, y) {
+    if (x == env.game.x && y == env.game.y) {
+      this.endGame();
+      return 'win';
+    } else return 'miss';
   },
   addPlayer: async function(id) {
     if (env.players[id] != null) return;

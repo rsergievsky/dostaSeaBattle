@@ -28,21 +28,30 @@ module.exports = {
 
   reply: async function(answer) {
     const token = cfg.tokens.users[answer.token_index];
-    let captcha = '';
+    const captcha = answer.captcha || '';
     try {
-      const res = JSON.parse(await rp.get(`https://api.vk.com/method/wall.createComment?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(answer.message)}&from_group=${env.groupID}&attachments=${answer.attachments}&reply_to_comment=${answer.comment_id}&access_token=${token}${captcha}&v=5.92`));
+      const options = {
+        host: 'https://api.vk.com/method/',
+        path: `wall.createComment?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(answer.message)}&from_group=${env.groupID}&attachments=${answer.attachments}&reply_to_comment=${answer.comment_id}&access_token=${token}${captcha}&v=5.92`;
+      };
+      const res = JSON.parse(await rp.get(options));
       if (res.error == null || res.error.error_code === '100') return true;
-      else {
-        if (res.error.error_code === '14') {
-          const captchaKey = await anticaptcha.solveCaptcha(res.error.captcha_img);
-          captcha = '';
-          return this.reply(answer);
-        }
+      else if (res.error.error_code === '14') {
+        console.log(`[${answer.token_index}] captcha blyad!`);
+        answer.captcha = await anticaptcha.solveCaptcha(res.error);
+        return this.reply(answer);
+      } else {
+        console.log(res.error.error_msg);
+        return false;
       }
     } catch(err) {
-      console.log(err);
+      console.log(err.message);
       return false;
     }
+  },
+  checkPlayer: async function(user_id) {
+    /** todo is member */
+    /** todo is like */
   },
   getUserName: async function(user_id) {
     console.log('no');

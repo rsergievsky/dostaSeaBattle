@@ -4,7 +4,7 @@ const env = require('./env'),
       gm = require('gm').subClass({imageMagick: true});
 
 module.exports = {
-  addMoveOnField: async function (x, y, moveResult) {
+  addMoveToField: async function (x, y, moveResult) {
     return new Promise(async (resolve, reject) => {
       console.time('pic');
       gm()

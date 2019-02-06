@@ -1,5 +1,4 @@
-const cfg = require('../config/config'),
-      key = cfg.anticaptchaKey,
+const key = require('../config/config').anticaptchaKey,
       rp = require('request-promise');
 
 module.exports = {
@@ -12,12 +11,12 @@ module.exports = {
       });
     });
   },
-  solveCaptcha: async function(src) {
+  solveCaptcha: async function(captcha) {
 
     return new Promise(async (resolve, reject) => {
       const anticaptcha = Anticaptcha(key);
 
-      const captcha = await rp(src, {encoding: null});
+      const captcha = await rp(captcha.captcha_img, {encoding: null});
       const img = new Buffer.from(captcha).toString('base64');
 
       anticaptcha.setLanguagePool('en');
@@ -33,7 +32,7 @@ module.exports = {
             return reject();
           }
 
-          return resolve(taskSolution);
+          return resolve(`&captcha_sid=${captcha.captcha_sid}&captcha_key=${taskSolution}`);
         });
       }, 'ImageToTextTask', {body: img});
     });

@@ -8,6 +8,7 @@ module.exports = {
   postID: 777,
   answerCD: 5,
   tokenIndex: -1,
+  busyTokens: [],
   game: {id:0, path:'', x:0, y:0, moves:{}, win:0},
   players: {},
   answers: {

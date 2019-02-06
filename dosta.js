@@ -13,15 +13,13 @@ process.on('SIGINT', async () => {
 });
 
 main = async() => {
-  // await db.init();
+  await db.init();
   app.listen(cfg.port, async () => {
     console.log(' *************************************************************** ');
     console.log(`Express server is up and listening on port ${cfg.port}`);
     // cron.on();
     const game = require('./modules/game');
-    // await game.createField();
     await game.startGame();
-    // await game.createField();
     await game.addPlayer(1);
     await game.makeMove(1, 'В', 4);
     await game.makeMove(1, 'З', 3);

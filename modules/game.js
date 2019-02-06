@@ -62,8 +62,6 @@ module.exports = {
             });
         console.timeEnd('pic');
       });
-      // await this.createField();
-      // await this.startGame();
     }
   },
   addPlayer: async function(id) {

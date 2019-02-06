@@ -1,7 +1,7 @@
-const env = require('../modules/env'),
-      db = require('../modules/db'),
+const env = require('./env'),
+      db = require('./db'),
       rp = require('request-promise'),
-      vk = require('../modules/vk'),
+      vk = require('./vk'),
       fs = require('fs'),
       moment = require('moment'),
       gm = require('gm').subClass({imageMagick: true});

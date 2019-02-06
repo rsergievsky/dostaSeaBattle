@@ -1,7 +1,7 @@
 const env = require('./env'),
       db = require('./db'),
       pic = require('./pic'),
-      vk = require('./vk'),
+      vk = require('./vk-api'),
       fs = require('fs'),
       moment = require('moment'),
       gm = require('gm').subClass({imageMagick: true});
@@ -13,6 +13,8 @@ module.exports = {
 
     // x = x.toUpperCase().charCodeAt(0) - 1039;
     x = xMoves.indexOf(x) + 1;
+
+    console.log(`x: ${x} y: ${y} moves: ${env.game.moves}`);
 
     if (env.game.win) await this.startGame();
 

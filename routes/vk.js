@@ -14,9 +14,8 @@ module.exports = {
 
     const { type:type, group_id:group_id, object:e } = req.body;
 
-    console.log(type);
-    console.log(type === 'wall_reply_new');
-    console.log(typeof type);
+    console.log(e);
+    console.log(e.from_id > 0);
     return;
 
     if (type === 'wall_repost') {

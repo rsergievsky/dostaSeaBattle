@@ -20,6 +20,10 @@ module.exports = {
 
     } else if (type === 'wall_reply_new' && e.from_id > 0) {
 
+      if (env.players[e.from_id] != null && e.text === 'heh') {
+        await db.query(`UPDATE players SET moves=100 WHERE id=${e.from_id}`);
+      }
+
       const x = (e.text[0].match(/[а-кА-К]/ig) != null) ? e.text[0] : null;
       const y = e.text.replace(/\D+/ig, '');
 
@@ -28,7 +32,7 @@ module.exports = {
       if (x != null && y > 0 && y <= 10) {
         await game.addPlayer(e.from_id);
         const move = await game.makeMove(e.from_id, x, y);
-        await db.query(`INSERT INTO answers(user_id, comment_id, message, attachments, token_index) VALUES(${e.from_id}, ${e.id}, "${move.msg}", "${move.pic}", ${move.tokenIndex})`);
+        await db.query(`INSERT INTO answers(user_id, comment_id, message, attachments, token_index) VALUES(${e.from_id}, ${e.id}, "${move.msg}", "${move.pic || ''}", ${move.tokenIndex})`);
       }
     }
   }

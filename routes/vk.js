@@ -1,14 +1,14 @@
 const env = require('../modules/env'),
-    db = require('../modules/db'),
-    game = require('../modules/game'),
-    rp = require('request-promise'),
-    fs = require('fs'),
-    cfg = require('../config/config'),
-    moment = require('moment');
+      db = require('../modules/db'),
+      game = require('../modules/game'),
+      rp = require('request-promise'),
+      fs = require('fs'),
+      cfg = require('../config/config'),
+      moment = require('moment');
 
 
 module.exports = {
-  callback: async function (req, res) {
+  callback: async function(req, res) {
 
     res.send('ok');
 
@@ -32,7 +32,7 @@ module.exports = {
       }
     }
   },
-  reply: async function (answer) {
+  reply: async function(answer) {
     let captcha = '';
     try {
       const res = JSON.parse(await rp.get(`https://api.vk.com/method/wall.createComment?owner_id=${env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(answer.message)}&from_group=${-env.groupID}&attachments=${pic}&reply_to_comment=${answer.comment_id}&access_token=${token}${captcha}&v=5.92`));
@@ -41,10 +41,10 @@ module.exports = {
       console.log(err);
     }
   },
-  getUserName: async function (user_id) {
+  getUserName: async function(user_id) {
     console.log('no');
   },
-  upload: async function (path) {
+  upload: async function(path) {
 
     const tokenIndex = env.getTokenIndex();
     const token = cfg.tokens.users[tokenIndex];

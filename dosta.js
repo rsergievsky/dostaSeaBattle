@@ -24,6 +24,8 @@ main = async() => {
     // await game.makeMove(1, 'В', 4);
     // await game.makeMove(1, 'З', 3);
     // await game.makeMove(1, 'К', 10);
+
+    await require('./routes/vk').getUserName(1);
   });
 }
 

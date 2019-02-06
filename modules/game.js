@@ -65,9 +65,14 @@ module.exports = {
     }
   },
   addPlayer: async function(id) {
-    if (env.players[id] != null) return;
-    env.players[id] = {moves: 1, repost: 0};
-    await db.query(`INSERT INTO players (id, moves, repost) VALUES(${id}, 1, 0);`);
+    return new Promise(async (resolve, reject) => {
+      if (env.players[id] != null) return;
+      env.players[id] = {moves: 1, repost: 0};
+      try {
+        await db.query(`INSERT INTO players (id, moves, repost) VALUES(${id}, 1, 0);`);
+        return resolve();
+      } catch(err) { return reject() }
+    });
   },
   handleRepost: async function(id) {
     if (env.players[id] == null) {

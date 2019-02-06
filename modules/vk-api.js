@@ -1,6 +1,6 @@
 const env = require('./env'),
       db = require('./db'),
-      game = require('./game'),
+      anticaptcha = require('./anticaptcha'),
       rp = require('request-promise'),
       fs = require('fs'),
       cfg = require('../config/config'),
@@ -31,10 +31,16 @@ module.exports = {
     let captcha = '';
     try {
       const res = JSON.parse(await rp.get(`https://api.vk.com/method/wall.createComment?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(answer.message)}&from_group=${env.groupID}&attachments=${answer.attachments}&reply_to_comment=${answer.comment_id}&access_token=${token}${captcha}&v=5.92`));
-      console.log(res);
-      return true;
+      if (res.error == null || res.error.error_code === '100') return true;
+      else {
+        if (res.error.error_code === '14') {
+          const captchaKey = await anticaptcha.solveCaptcha(res.error.captcha_img);
+          captcha = '';
+          return this.reply(answer);
+        }
+      }
     } catch(err) {
-      console.log('err: '+err.error.error_code);
+      console.log(err);
       return false;
     }
   },
@@ -45,8 +51,6 @@ module.exports = {
 
     const tokenIndex = env.getTokenIndex();
     const token = cfg.tokens.users[tokenIndex];
-
-
 
     await env.sleep(1000);
     /** group_id should be a positive number */

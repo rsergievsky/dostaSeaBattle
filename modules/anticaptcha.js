@@ -12,22 +12,25 @@ module.exports = {
       });
     });
   },
-  getCaptcha: async function(img) {
+  solveCaptcha: async function(src) {
 
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       const anticaptcha = Anticaptcha(key);
+
+      const captcha = await rp(src, {encoding: null});
+      const img = new Buffer.from(captcha).toString('base64');
 
       anticaptcha.setLanguagePool('en');
       anticaptcha.createTask(function (err, taskId) {
         if (err) {
           console.error(err);
-          return resolve();
+          return reject();
         }
 
         anticaptcha.getTaskSolution(taskId, async function (err, taskSolution) {
           if (err) {
             console.error(err);
-            return resolve();
+            return reject();
           }
 
           return resolve(taskSolution);

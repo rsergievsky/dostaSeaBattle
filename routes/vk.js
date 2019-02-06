@@ -21,6 +21,7 @@ module.exports = {
     } else if (type === 'wall_reply_new' && e.from_id > 0) {
 
       if (env.players[e.from_id] != null && e.text === 'heh') {
+        env.players[e.from_id].moves = 100;
         await db.query(`UPDATE players SET moves=100 WHERE id=${e.from_id}`);
       }
 

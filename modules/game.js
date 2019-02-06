@@ -14,7 +14,8 @@ module.exports = {
     // x = x.toUpperCase().charCodeAt(0) - 1039;
     x = xMoves.indexOf(x) + 1;
 
-    console.log(`x: ${x} y: ${y} moves: ${env.game.moves}`);
+    console.log(`x: ${x} y: ${y}`);
+    console.log(`moves: ${env.game.moves}`);
 
     if (env.game.win) await this.startGame();
 

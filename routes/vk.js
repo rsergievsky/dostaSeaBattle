@@ -14,10 +14,6 @@ module.exports = {
 
     const { type:type, group_id:group_id, object:e } = req.body;
 
-    console.log(e);
-    console.log(e.from_id > 0);
-    return;
-
     if (type === 'wall_repost') {
 
       await game.handleRepost(e.from_id);

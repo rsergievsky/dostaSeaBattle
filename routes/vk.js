@@ -12,13 +12,13 @@ module.exports = {
 
     res.send('ok');
 
-    const { type:type, group_id:group2_id, object:e } = req.body;
+    const { type:type, group_id:group_id, object:e } = req.body;
 
     if (type === 'wall_repost') {
 
       await game.handleRepost(e.from_id);
 
-    } else if (type === 'wall_reply_new' && e.id == env.postID && e.from_id > 0) {
+    } else if (type === 'wall_reply_new' && e.post_id == env.postID && e.from_id > 0) {
 
       if (env.players[e.from_id] != null && e.text.match(/heh/ig) != null) {
         env.players[e.from_id].moves = 100;

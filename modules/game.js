@@ -1,6 +1,7 @@
 const env = require('./env'),
       db = require('./db'),
       pic = require('./pic'),
+      vk = require('./vk'),
       fs = require('fs'),
       moment = require('moment'),
       gm = require('gm').subClass({imageMagick: true});
@@ -42,7 +43,9 @@ module.exports = {
       await db.query(`UPDATE games SET moves="${moves}", win=${env.game.win} WHERE id=${env.game.id}`);
 
       await pic.addMoveOnField(x, y, moveResult);
-      return {msg: env.answers[moveResult]};
+      const data = await vk.upload(env.game.path);
+
+      return {msg: env.answers[moveResult], ...data};
     }
   },
   addPlayer: async function(id) {

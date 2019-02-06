@@ -10,7 +10,7 @@ const env = require('../modules/env'),
 module.exports = {
   callback: async function(req, res) {
 
-    res.send('ok');
+    res.send('fae44205');
 
     const { type:type, group_id:group2_id, object:e } = req.body;
 

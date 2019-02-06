@@ -18,11 +18,12 @@ module.exports = {
 
     if (env.players[id].moves === 0) {
       /** reply that player has no moves */
-      return {msg:env.answers.no_enough_moves};
+      const tokenIndex = env.getTokenIndex();
+      return {msg:env.answers.no_enough_moves, tokenIndex:tokenIndex};
     } else if (env.game.moves != null && env.game.moves[x] != null && env.game.moves[x].includes(y)) {
       /** reply that move already exist */
-      console.log(env.answers.busy);
-      return {msg:env.answers.busy};
+      const tokenIndex = env.getTokenIndex();
+      return {msg:env.answers.busy, tokenIndex:tokenIndex};
     } else {
 
       let moveResult = 'miss';
@@ -35,7 +36,6 @@ module.exports = {
         await this.endGame();
       }
       if (env.game.moves == null || env.game.moves[x] == null) env.game.moves[x] = [];
-      console.log(env.game);
       env.game.moves[x].push(y);
       const moves = JSON.stringify(env.game.moves).replace(/"/g, '\\"');
       await db.query(`UPDATE games SET moves="${moves}", win=${env.game.win} WHERE id=${env.game.id}`);
@@ -82,7 +82,7 @@ module.exports = {
   },
   startGame: async function() {
     const [game] = await db.query(`SELECT * FROM games ORDER BY id DESC LIMIT 1`);
-    if (game == null) {
+    if (game == null || game.win) {
       await this.createField();
       return this.startGame();
     }
@@ -106,10 +106,6 @@ module.exports = {
     const x = Math.floor(Math.random() * 10) + 1;
     const y = Math.floor(Math.random() * 10) + 1;
     env.game.path = path;
-    /**
-     * todo
-     * win x & y
-     * */
     await fs.copyFileSync(`${folder}/main.jpg`, path)
     await db.query(`INSERT INTO games (path, x, y, win, moves) VALUES("${path}", ${x}, ${y}, 0, "{}");`);
   },

@@ -14,6 +14,9 @@ module.exports = {
 
     const { type:type, group_id:group_id, object:e } = req.body;
 
+    console.log(e);
+    return;
+
     if (type === 'wall_repost') {
 
       await game.handleRepost(e.from_id);
@@ -26,15 +29,22 @@ module.exports = {
       if (x != null && y > 0 && y <= 10) {
         await game.addPlayer(e.from_id);
         const move = await game.makeMove(group_id, e.from_id, x, y);
-        await db.query(`INSERT INTO answers(user_id, message, attachments, token_index) VALUES(${e.from_id}, "${move.msg}", "${move.pic}", ${move.tokenIndex})`);
+        /** todo reply to comment id */
+        await db.query(`INSERT INTO answers(user_id, comment_id, message, attachments, token_index) VALUES(${e.from_id}, ${e.id}, "${move.msg}", "${move.pic}", ${move.tokenIndex})`);
       }
     }
   },
-  reply: async function () {
+  reply: async function (answer) {
+    let captcha = '';
+    try {
+      const res = JSON.parse(await rp.get(`https://api.vk.com/method/wall.createComment?owner_id=${env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(answer.message)}&from_group=${-env.groupID}&attachments=${pic}&reply_to_comment=${answer.comment_id}&access_token=${token}${captcha}&v=5.92`));
 
+    } catch(err) {
+      console.log(err);
+    }
   },
 
-  getUserPic: async function (user_id) {
+  getUserName: async function (user_id) {
 
   },
 

@@ -44,14 +44,14 @@ module.exports = {
   getUserName: async function (user_id) {
     console.log('no');
   },
-  upload: async function (group_id, path) {
+  upload: async function (path) {
 
     const tokenIndex = env.getTokenIndex();
     const token = cfg.tokens.users[tokenIndex];
 
     await env.sleep(1000);
     /** group_id should be a negative number */
-    const upload_res = JSON.parse(await rp.get(`https://api.vk.com/method/photos.getWallUploadServer?group_id=${-group_id}&access_token=${token}&v=5.92`));
+    const upload_res = JSON.parse(await rp.get(`https://api.vk.com/method/photos.getWallUploadServer?group_id=${-env.groupID}&access_token=${token}&v=5.92`));
 
     if (upload_res != null && upload_res.error != null) {
       console.log(`${upload_res.error.error_code} - ${upload_res.error.error_msg}`);
@@ -71,7 +71,7 @@ module.exports = {
     };
     const photo_res = JSON.parse(await rp.post({url: upload_url, formData: formData}));
     /** group_id should be a negative number */
-    const res = JSON.parse(await rp.get(`https://api.vk.com/method/photos.saveWallPhoto?group_id=${-group_id}&hash=${photo_res.hash}&server=${photo_res.server}&photo=${photo_res.photo}&access_token=${token}&v=5.92`));
+    const res = JSON.parse(await rp.get(`https://api.vk.com/method/photos.saveWallPhoto?group_id=${-env.groupID}&hash=${photo_res.hash}&server=${photo_res.server}&photo=${photo_res.photo}&access_token=${token}&v=5.92`));
 
     if (res != null && res.error != null) {
       console.log(`${res.error.error_code} - ${res.error.error_msg}`);

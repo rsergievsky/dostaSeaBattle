@@ -82,6 +82,10 @@ module.exports = {
   },
   startGame: async function() {
     const [game] = await db.query(`SELECT * FROM games ORDER BY id DESC LIMIT 1`);
+    if (game == null) {
+      await this.createField();
+      return this.startGame();
+    }
     env.game = game;
     env.game.moves = JSON.parse(game.moves);
     env.players = {};

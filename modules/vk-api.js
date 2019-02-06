@@ -7,6 +7,25 @@ const env = require('./env'),
       moment = require('moment');
 
 module.exports = {
+
+  /**
+  { error_code: 14,
+    error_msg: 'Captcha needed',
+    request_params:
+     [ [Object],
+       [Object],
+       [Object],
+       [Object],
+       [Object],
+       [Object],
+       [Object],
+       [Object],
+       [Object] ],
+    captcha_sid: '773031105242',
+    captcha_img: 'https://api.vk.com/captcha.php?sid=773031105242&s=1' } }
+
+   */
+
   reply: async function(answer) {
     const token = cfg.tokens.users[answer.token_index];
     let captcha = '';
@@ -15,7 +34,7 @@ module.exports = {
       console.log(res);
       return true;
     } catch(err) {
-      console.log(err);
+      console.log('err: '+err.error.error_code);
       return false;
     }
   },

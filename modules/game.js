@@ -71,7 +71,7 @@ module.exports = {
       try {
         await db.query(`INSERT INTO players (id, moves, repost) VALUES(${id}, 1, 0);`);
         return resolve();
-      } catch(err) { return reject() }
+      } catch(err) { console.log(err); return reject() }
     });
   },
   handleRepost: async function(id) {

@@ -20,7 +20,7 @@ module.exports = {
 
     } else if (type === 'wall_reply_new' && e.from_id > 0) {
 
-      const x = (e.text[0].match(/[а-иА-И]/ig) != null) ? e.text[0] : null;
+      const x = (e.text[0].match(/[а-кА-К]/ig) != null) ? e.text[0] : null;
       const y = e.text.replace(/\D+/ig, '');
 
       console.log(x, y);

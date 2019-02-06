@@ -24,6 +24,8 @@ module.exports = {
     const tokenIndex = env.getTokenIndex();
     const token = cfg.tokens.users[tokenIndex];
 
+
+
     await env.sleep(1000);
     /** group_id should be a positive number */
     const upload_res = JSON.parse(await rp.get(`https://api.vk.com/method/photos.getWallUploadServer?group_id=${env.groupID}&access_token=${token}&v=5.92`));

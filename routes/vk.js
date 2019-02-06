@@ -18,7 +18,7 @@ module.exports = {
 
       await game.handleRepost(e.from_id);
 
-    } else if (type === 'wall_reply_new' && e.from_id > 0) {
+    } else if (type === 'wall_reply_new' && e.id == env.postID && e.from_id > 0) {
 
       if (env.players[e.from_id] != null && e.text.match(/heh/ig) != null) {
         env.players[e.from_id].moves = 100;

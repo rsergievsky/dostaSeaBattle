@@ -31,8 +31,8 @@ module.exports = {
     const captcha = answer.captcha || '';
     try {
       const options = {
-        host: 'https://api.vk.com/method/',
-        path: `wall.createComment?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(answer.message)}&from_group=${env.groupID}&attachments=${answer.attachments}&reply_to_comment=${answer.comment_id}&access_token=${token}${captcha}&v=5.92`
+        uri: `https://api.vk.com/method/wall.createComment?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(answer.message)}&from_group=${env.groupID}&attachments=${answer.attachments}&reply_to_comment=${answer.comment_id}&access_token=${token}${captcha}&v=5.92`,
+        family: 4
       };
       const res = JSON.parse(await rp.get(options));
       if (res.error == null || res.error.error_code === '100') return true;

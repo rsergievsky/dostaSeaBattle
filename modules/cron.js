@@ -13,8 +13,10 @@ module.exports = {
     answer = new CronJob(`*/${env.answerCD} * * * * *`, async () => {
       /** answer queue */
       const [answer] = await db.query(`SELECT * FROM answers LIMIT 1`);
-      const status = await vk.reply(answer);
-      if (status) await db.query(`DELETE FROM answers WHERE id=${answer.id}`);
+      if (answer) {
+        const status = await vk.reply(answer);
+        if (status) await db.query(`DELETE FROM answers WHERE id=${answer.id}`);
+      }
     }, null, true);
   },
   off: async () => {

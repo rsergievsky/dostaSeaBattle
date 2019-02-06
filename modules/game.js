@@ -39,9 +39,9 @@ module.exports = {
       await db.query(`UPDATE games SET moves="${moves}", win=${env.game.win} WHERE id=${env.game.id}`);
 
       await pic.addMoveToField(x, y, moveResult);
-      const pic = await vk.upload(env.game.path);
+      const data = await vk.upload(env.game.path);
 
-      return {msg: env.answers[moveResult], tokenIndex: tokenIndex, pic: pic};
+      return {msg: env.answers[moveResult], tokenIndex: tokenIndex, pic: data};
     }
   },
   checkMove: function(x, y) {

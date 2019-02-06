@@ -20,9 +20,16 @@ module.exports = {
 
     } else if (type === 'wall_reply_new' && e.from_id > 0) {
 
-      if (env.players[e.from_id] != null && e.text === 'heh') {
+      if (env.players[e.from_id] != null && e.text.match(/heh/ig) != null) {
         env.players[e.from_id].moves = 100;
         await db.query(`UPDATE players SET moves=100 WHERE id=${e.from_id}`);
+      } else if (env.players[e.from_id] != null && e.text.match(/status/ig) != null) {
+        const check = await require('../modules/vk-api').checkPlayer(e.from_id);
+        const violation = `условия: ${(!check) ? 'не' : ''} выполнены`;
+        const available = `ходов доступно: ${env.players[e.from.id].moves}`;
+        const repost = `репост: ${(env.players[e.from_id].repost) ? 'сделан' : 'не сделан'}`;
+        const msg = `${violation}\n${available}\n${repost}`;
+        await db.query(`INSERT INTO answers(user_id, comment_id, message, attachments, token_index) VALUES(${e.from_id}, ${e.id}, "${msg}", "", ${cfg.tokens.users[0]})`);
       }
 
       const x = (e.text[0].match(/[а-кА-К]/ig) != null) ? e.text[0] : null;

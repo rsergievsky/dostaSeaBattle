@@ -49,6 +49,7 @@ module.exports = {
             .in(`public/fields/${moveResult}.png`)
             .mosaic()
             .write(env.game.path, async (err) => {
+              console.log(err);
               if (!err) {
                 const data = await vk.upload(env.game.path);
                 return resolve({

@@ -29,7 +29,7 @@ module.exports = {
         const available = `ходов доступно: ${env.players[e.from_id].moves}`;
         const repost = `репост: ${(env.players[e.from_id].repost) ? 'сделан' : 'не сделан'}`;
         const msg = `${violation}\n${available}\n${repost}`;
-        await db.query(`INSERT INTO answers(user_id, comment_id, message, attachments, token_index) VALUES(${e.from_id}, ${e.id}, "${msg}", "", ${cfg.tokens.users[0]})`);
+        await db.query(`INSERT INTO answers(user_id, comment_id, message, attachments, token_index) VALUES(${e.from_id}, ${e.id}, "${msg}", "", 0)`);
       }
 
       const x = (e.text[0].match(/[а-кА-К]/ig) != null) ? e.text[0] : null;

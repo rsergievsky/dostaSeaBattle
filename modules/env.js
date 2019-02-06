@@ -12,6 +12,7 @@ module.exports = {
   game: {id:0, path:'', x:0, y:0, moves:{}, win:0},
   players: {},
   answers: {
+    violation: 'не выполнены условия',
     miss: 'промах',
     busy: 'уже попали',
     no_enough_moves: 'нет ходов',

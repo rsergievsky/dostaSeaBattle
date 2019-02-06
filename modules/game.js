@@ -10,15 +10,15 @@ const xMoves = ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'К'];
 module.exports = {
   makeMove: async function(id, x, y) {
 
-    const check = await vk.checkPlayer(id);
-    console.log(check);
-
     // x = x.toUpperCase().charCodeAt(0) - 1039;
     x = xMoves.indexOf(x.toUpperCase()) + 1;
 
     if (env.game.win) await this.startGame();
 
-    if (env.players[id].moves === 0) {
+    const check = await vk.checkPlayer(id);
+    if (check) {
+      return {msg:env.answers.violation, tokenIndex:tokenIndex};
+    } else if (env.players[id].moves === 0) {
       /** reply that player has no moves */
       console.log(env.answers.no_enough_moves);
       const tokenIndex = env.getTokenIndex();

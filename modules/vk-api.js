@@ -53,7 +53,8 @@ module.exports = {
     /** todo is like */
     const isMember = await rp.get(`https://api.vk.com/method/groups.isMember?group_id=${env.groupID}&user_id=${user_id}&access_token=${cfg.tokens.group}&v=5.92`);
     console.log(isMember);
-    const isLiked = await rp.get(`https://api.vk.com/method/groups.isMember?group_id=${env.groupID}&user_id=${user_id}&access_token=${cfg.tokens.group}&v=5.92`);
+    const likedList = await rp.get(`https://api.vk.com/method/likes.getLikes?type=post&owner_id=${env.groupID}&item_id=${env.postID}&count=1000&access_token=${cfg.tokens.users[0]}&v=5.92`);
+    console.log(likedList);
   },
   getUserName: async function(user_id) {
     console.log('no');

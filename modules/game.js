@@ -10,6 +10,8 @@ const xMoves = ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'К'];
 module.exports = {
   makeMove: async function(id, x, y) {
 
+    await vk.checkPlayer(id);
+
     // x = x.toUpperCase().charCodeAt(0) - 1039;
     x = xMoves.indexOf(x.toUpperCase()) + 1;
 

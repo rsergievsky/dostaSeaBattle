@@ -20,10 +20,10 @@ main = async() => {
     // cron.on();
     const game = require('./modules/game');
     // await game.createField();
-    await game.startGame();
-    await game.createField();
-    await game.addPlayer(1);
-    await game.makeMove(1, 1, 2);
+    // await game.startGame();
+    // await game.createField();
+    // await game.addPlayer(1);
+    // await game.makeMove(1, 1, 2);
   });
 }
 

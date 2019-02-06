@@ -3,38 +3,30 @@ const env = require('../modules/env'),
     game = require('../modules/game'),
     rp = require('request-promise'),
     fs = require('fs'),
+    cfg = require('../config/config'),
     moment = require('moment');
 
 
 module.exports = {
   callback: async function (req, res) {
 
-    res.send('fae44205');
+    res.send('ok');
 
-    const type = req.body.type;
-    const e = req.body.object;
-    const user_id = e.from_id;
-    const group_id = req.body.group_id;
+    const { type:type, group_id:group_id, object:e } = req.body;
 
     if (type === 'wall_repost') {
 
-      await game.onRepost(user_id);
+      await game.handleRepost(e.from_id);
 
-    } else if (type === 'wall_reply_new' && user_id > 0) {
+    } else if (type === 'wall_reply_new' && e.from_id > 0) {
 
       const x = (e.text[0].match(/[а-иА-И]/ig) != null) ? e.text[0] : null;
       const y = e.text.replace(/\D+/ig, '');
 
       if (x != null && y > 0 && y <= 10) {
-        await game.addPlayer(user_id);
-        const move = await game.makeMove(group_id, user_id, x, y);
-        if (move.attachments != null) {
-          const answer = ``;
-          await db.query(`INSERT INTO answers() VALUES()`);
-        } else {
-          const answer = ``;
-          await db.query(`INSERT INTO answers() VALUES()`);
-        }
+        await game.addPlayer(e.from_id);
+        const move = await game.makeMove(group_id, e.from_id, x, y);
+        await db.query(`INSERT INTO answers(user_id, message, attachments, token_index) VALUES(${e.from_id}, "${move.msg}", "${move.pic}", ${move.tokenIndex})`);
       }
     }
   },
@@ -47,6 +39,10 @@ module.exports = {
   },
 
   upload: async function (group_id, path) {
+
+    const tokenIndex = env.getTokenIndex();
+    const token = cfg.tokens.users[tokenIndex];
+
     await env.sleep(1000);
     /** group_id should be a negative number */
     const upload_res = JSON.parse(await rp.get(`https://api.vk.com/method/photos.getWallUploadServer?group_id=${-group_id}&access_token=${token}&v=5.92`));
@@ -77,6 +73,6 @@ module.exports = {
     }
 
     const {response: [photo]} = res;
-    return `photo${photo.owner_id}_${photo.id}`;
+    return {tokenIndex:tokenIndex, pic:`photo${photo.owner_id}_${photo.id}`};
   }
 }

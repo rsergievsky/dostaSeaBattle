@@ -5,6 +5,12 @@ const db = require('../modules/db'),
 module.exports = {
   dosta: true,
   answerCD: 5,
+  tokenIndex: -1,
+  getTokenIndex: function() {
+    this.tokenIndex++;
+    if (this.tokenIndex > 0) this.tokenIndex = 0;
+    return this.tokenIndex;
+  },
   answers: {
     miss: 'answer for miss',
     busy: 'answer for busy',

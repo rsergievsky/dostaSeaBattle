@@ -17,14 +17,9 @@ main = async() => {
   app.listen(cfg.port, async () => {
     console.log(' *************************************************************** ');
     console.log(`Express server is up and listening on port ${cfg.port}`);
-    // cron.on();
+    cron.on();
     const game = require('./modules/game');
     await game.startGame();
-    await game.addPlayer(1);
-    // await game.makeMove(1, 'В', 4);
-    // await game.makeMove(1, 'З', 3);
-    // await game.makeMove(1, 'К', 10);
-
     await require('./routes/vk').getUserName(1);
   });
 }

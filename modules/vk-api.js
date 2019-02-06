@@ -8,12 +8,15 @@ const env = require('./env'),
 
 module.exports = {
   reply: async function(answer) {
+    const token = cfg.tokens.users[env.tokenIndex];
     let captcha = '';
     try {
-      const res = JSON.parse(await rp.get(`https://api.vk.com/method/wall.createComment?owner_id=${env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(answer.message)}&from_group=${-env.groupID}&attachments=${pic}&reply_to_comment=${answer.comment_id}&access_token=${token}${captcha}&v=5.92`));
-
+      const res = JSON.parse(await rp.get(`https://api.vk.com/method/wall.createComment?owner_id=${env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(answer.message)}&from_group=${-env.groupID}&attachments=${answer.attachments}&reply_to_comment=${answer.comment_id}&access_token=${token}${captcha}&v=5.92`));
+      console.log(res);
+      return true;
     } catch(err) {
       console.log(err);
+      return false;
     }
   },
   getUserName: async function(user_id) {

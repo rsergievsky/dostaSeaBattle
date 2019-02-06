@@ -27,6 +27,9 @@ module.exports = {
       });
     });
   },
+  addAnswer: async function(move) {
+
+  },
   init: async function() {
     await sequelize.authenticate();
     console.log('db ready');

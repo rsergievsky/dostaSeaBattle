@@ -18,6 +18,12 @@ main = async() => {
     console.log(' *************************************************************** ');
     console.log(`Express server is up and listening on port ${cfg.port}`);
     // cron.on();
+    const game = require('./modules/game');
+    // await game.createField();
+    await game.startGame();
+    await game.createField();
+    await game.addPlayer(1);
+    await game.makeMove(1, 1, 2);
   });
 }
 

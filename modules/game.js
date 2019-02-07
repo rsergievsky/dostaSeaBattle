@@ -18,18 +18,17 @@ module.exports = {
     const tokenIndex = env.getTokenIndex();
 
     const check = await vk.checkPlayer(id);
-
     if (check.isReposted && !env.players[id].repost) {
-      env.players[id].repost = 1;
       env.players[id].moves++;
-      await db.query(`UPDATE players SET moves=${env.players[id].moves}, repost=1 WHERE id=${id}`);
+      env.players[id].repost = 1;
+      await db.query(`UPDATE players SET moves=${env.players.moves}, repost=1 WHERE id=${id}`);
     } else if (!check.isReposted && env.players[id].repost) {
-      env.players[id].repost = 0;
       if (env.players[id].moves > 0) env.players[id].moves--;
-      await db.query(`UPDATE players SET moves=${env.players[id].moves}, repost=0 WHERE id=${id}`);
+      env.players[id].repost = 0;
+      await db.query(`UPDATE players SET moves=${env.players.moves}, repost=0 WHERE id=${id}`);
     }
 
-    if (!check.isMember || !check.isLiked) {
+    if (!check.isLiked || !check.isMember) {
       return {msg:env.getAnswer.violation(id), tokenIndex:tokenIndex};
     } else if (env.players[id].moves === 0) {
       return {msg:env.getAnswer.no_enough_moves(id), tokenIndex:tokenIndex};

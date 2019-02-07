@@ -48,10 +48,10 @@ module.exports = {
       return false;
     }
   },
-  updatePost: async function(msg, attachments, captcha) {
+  updatePost: async function(msg, attachments, index, captcha) {
 
-    if (env.busyTokens.includes(0)) await env.sleep(15000);
-    const token = cfg.tokens.users[0];
+    if (env.busyTokens.includes(0)) await env.sleep(10000);
+    const token = cfg.tokens.users[index];
     try {
       const res = JSON.parse(await rp.get(`https://api.vk.com/method/wall.edit?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(env.postText)}&attachments=${attachments}&access_token=${token}&captcha=${captcha || ''}&v=5.92`));
       if (res.error == null || res.error.error_code == '100') return true;
@@ -59,7 +59,7 @@ module.exports = {
         env.busyTokens[0] = 0;
         const captchaRes = await anticaptcha.solveCaptcha(res.error);
         delete env.busyTokens[0];
-        return this.updatePost(msg, attachments, captchaRes);
+        return this.updatePost(msg, attachments, index, captchaRes);
       } else {
         console.log(res.error.error_msg);
         return false;
@@ -96,7 +96,8 @@ module.exports = {
   },
   upload: async function(path) {
 
-    const token = cfg.tokens.users[env.tokenIndex];
+    const index = env.tokenIndex;
+    const token = cfg.tokens.users[index];
 
     await env.sleep(1000);
     /** group_id should be a positive number */
@@ -128,6 +129,6 @@ module.exports = {
     }
 
     const {response: [photo]} = res;
-    return `photo${photo.owner_id}_${photo.id}`;
+    return {data: `photo${photo.owner_id}_${photo.id}`, index: index};
   }
 }

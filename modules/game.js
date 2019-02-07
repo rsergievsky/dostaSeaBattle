@@ -5,13 +5,13 @@ const env = require('./env'),
       fs = require('fs'),
       moment = require('moment');
 
-const yMoves = ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'К'];
+const xMoves = ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'К'];
 
 module.exports = {
   makeMove: async function(id, x, y) {
 
     // x = x.toUpperCase().charCodeAt(0) - 1039;
-    y = yMoves.indexOf(x.toUpperCase()) + 1;
+    x = xMoves.indexOf(x.toUpperCase()) + 1;
 
     if (env.game.win) await this.startGame();
 

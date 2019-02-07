@@ -54,7 +54,7 @@ module.exports = {
     const token = cfg.tokens.users[index];
     try {
       const req = (!gameOver)
-        ? `https://api.vk.com/method/wall.edit?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(env.postText)}&attachments=${attachments}&access_token=${token}&captcha=${captcha || ''}&v=5.92`
+        ? `https://api.vk.com/method/wall.edit?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(env.postText())}&attachments=${attachments}&access_token=${token}&captcha=${captcha || ''}&v=5.92`
         : `https://api.vk.com/method/wall.edit?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(env.gameOverText)}&close_comments=1&access_token=${token}&captcha=${captcha || ''}&v=5.92`;
       const res = JSON.parse(await rp.get(req));
       if (res.error == null || res.error.error_code == '100') return true;

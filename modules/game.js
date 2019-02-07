@@ -62,8 +62,9 @@ module.exports = {
   handleRepost: async function(id) {
     if (env.players[id] == null) {
       env.players[id] = {moves: 2, repost: 1};
-      await db.query(`INSERT INTO players (id, moves, repost) VALUES(${id}, 2, 1);`);
-    } else if (env.players[id].repost === 0) {
+      const name = await vk.getUserName(id);
+      await db.query(`INSERT INTO players (id, moves, repost, name) VALUES(${id}, 2, 1, "${name}");`);
+    } else if (env.players[id].repost == 0) {
       env.players[id].moves++;
       env.players[id].repost = 1;
       await db.query(`UPDATE players SET moves=${env.players[id].moves}, repost=1 WHERE id=${id}`);

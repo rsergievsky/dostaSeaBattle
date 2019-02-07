@@ -35,10 +35,11 @@ module.exports = {
 
       const x = (e.text[0].match(/[а-кА-К]/ig) != null) ? e.text[0] : null;
       const y = e.text.replace(/\D+/ig, '');
+      const letters = e.text.replace(/\d+/ig, '');
 
       console.log(x, y);
 
-      if (x != null && y > 0 && y <= 10) {
+      if (x != null && y > 0 && y <= 10 && letters.length === 1) {
         await game.addPlayer(e.from_id);
         const move = await game.makeMove(e.from_id, x, y);
         await db.addAnswer(e.from_id, e.id, move.msg, move.pic, move.tokenIndex);

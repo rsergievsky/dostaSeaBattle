@@ -70,7 +70,7 @@ module.exports = {
     }
   },
   startGame: async function() {
-    const count = await db.query(`SELECT COUNT(*) as FROM games WHERE win=1`);
+    const count = await db.query(`SELECT COUNT(*) as count FROM games WHERE win=1`);
     console.log(count);
     const [game] = await db.query(`SELECT * FROM games ORDER BY id DESC LIMIT 1`);
     if (game == null || game.win) {

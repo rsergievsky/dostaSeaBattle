@@ -5,7 +5,7 @@ const db = require('../modules/db'),
 module.exports = {
   dosta: true,
   groupID: 160258026,
-  postID: 1283,
+  postID: 1302,
   answerCD: 5,
   tokenIndex: -1,
   busyTokens: [],

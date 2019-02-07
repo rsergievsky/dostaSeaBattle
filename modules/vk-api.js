@@ -48,31 +48,26 @@ module.exports = {
       return false;
     }
   },
-  updatePost: async function(msg, attachments) {
-    //
-    // if (env.busyTokens.includes(answer.token_index)) await env.sleep(15000);
-    // const token = cfg.tokens.users[answer.token_index];
-    // const captcha = answer.captcha || '';
-    // try {
-    //   const res = JSON.parse(await rp.get(`https://api.vk.com/method/wall.createComment?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(answer.message)}&from_group=${env.groupID}&attachments=${answer.attachments}&reply_to_comment=${answer.comment_id}&access_token=${token}${captcha}&v=5.92`));
-    //   if (res.error == null || res.error.error_code == '100') return true;
-    //   else if (res.error.error_code == '14') {
-    //     console.log(`[${answer.token_index}] captcha blyad!`);
-    //     env.busyTokens[answer.token_index] = answer.token_index;
-    //     answer.captcha = await anticaptcha.solveCaptcha(res.error);
-    //     delete env.busyTokens[answer.token_index];
-    //     return this.reply(answer);
-    //   } else {
-    //     console.log(res.error.error_msg);
-    //     return false;
-    //   }
-    // } catch(err) {
-    //   console.log(err.message);
-    //   return false;
-    // }
+  updatePost: async function(msg, attachments, captcha) {
 
-    const res = JSON.parse(await rp.get(`https://api.vk.com/method/wall.edit?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(msg)}&attachments=${attachments}&access_token=${cfg.tokens.users[0]}&v=5.92`));
-    console.log(res);
+    if (env.busyTokens.includes(0)) await env.sleep(15000);
+    const token = cfg.tokens.users[0];
+    try {
+      const res = JSON.parse(await rp.get(`https://api.vk.com/method/wall.edit?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(msg)}&attachments=${attachments}&access_token=${token}&captcha=${captcha || ''}&v=5.92`));
+      if (res.error == null || res.error.error_code == '100') return true;
+      else if (res.error.error_code == '14') {
+        env.busyTokens[0] = 0;
+        const captchaRes = await anticaptcha.solveCaptcha(res.error);
+        delete env.busyTokens[0];
+        return this.updatePost(msg, attachments, captchaRes);
+      } else {
+        console.log(res.error.error_msg);
+        return false;
+      }
+    } catch(err) {
+      console.log(err.message);
+      return false;
+    }
   },
   restartAlert: async function() {
     const res = JSON.parse(await rp.get(`https://api.vk.com/method/wall.createComment?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(env.answers.restart)}&from_group=${env.groupID}&access_token=${cfg.tokens.users[0]}&v=5.92`));

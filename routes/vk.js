@@ -12,7 +12,7 @@ module.exports = {
 
     res.send('ok');
 
-    const { type:type, group_id:group_id, object:e } = req.body;
+    const { type:type, object:e } = req.body;
 
     if (type === 'wall_repost') {
 
@@ -23,14 +23,6 @@ module.exports = {
       if (env.players[e.from_id] != null && e.text.match(/heh/ig) != null) {
         env.players[e.from_id].moves = 100;
         await db.query(`UPDATE players SET moves=100 WHERE id=${e.from_id}`);
-      } else if (env.players[e.from_id] != null && e.text.match(/status/ig) != null) {
-        const check = await require('../modules/vk-api').checkPlayer(e.from_id);
-        const violation = `условия: ${(!check) ? 'не' : ''} выполнены`;
-        const available = `ходов доступно: ${env.players[e.from_id].moves}`;
-        const repost = `репост: ${(env.players[e.from_id].repost) ? 'сделан' : 'не сделан'}`;
-        const info = `чтобы получить 100 ходов напиши "heh"`;
-        const msg = `${violation}\n${available}\n${repost}\n${info}`;
-        await db.addAnswer(e.from_id, e.id, msg, null, 0);
       }
 
       const x = (e.text[0].match(/[а-кА-К]/ig) != null) ? e.text[0] : null;

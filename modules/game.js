@@ -79,7 +79,7 @@ module.exports = {
   },
   startGame: async function() {
     const [row] = await db.query(`SELECT comment FROM winners ORDER BY id DESC LIMIT 1`);
-    env.lastWinner = (row.comment) ? row.comment : '-';
+    env.lastWinner = (row && row.comment) ? row.comment : '-';
     const [{count}] = await db.query(`SELECT COUNT(*) as count FROM games WHERE win=1`);
     if (count > 49) await vk.updatePost(null, env.getTokenIndex(), true);
     else {

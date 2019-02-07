@@ -41,7 +41,7 @@ module.exports = {
       await pic.addMoveToField(x, y, moveResult);
       const data = await vk.upload(env.game.path);
 
-      await vk.updatePost(data);
+      await vk.updatePost(`последний ход: x: ${x} y: ${y}`, data);
 
       return {msg: env.answers[moveResult], tokenIndex: tokenIndex, pic: data};
     }

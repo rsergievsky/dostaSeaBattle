@@ -90,9 +90,9 @@ module.exports = {
     getReposts: for (let i = 0; i < 15; i++) {
       const {response} = JSON.parse(await rp.get(`https://api.vk.com/method/wall.getReposts?&owner_id=${-env.groupID}&post_id=${env.postID}&count=1000&offset=${i*1000}&access_token=${cfg.tokens.users[env.tokenIndex]}&v=5.92`));
       console.log(response);
-      if (response.items == null || response.items.length === 0) break getReposts;
-      for (const item of response.items) {
-        repostedList.push(item.id);
+      if (response.profiles == null || response.profiles.length === 0) break getReposts;
+      for (const profile of response.profiles) {
+        repostedList.push(profile.id);
       }
       if (response.items.length < 1000) break getReposts;
     }

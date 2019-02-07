@@ -11,7 +11,7 @@ module.exports = {
   busyTokens: [],
   catpchas: [],
   game: {id:0, path:'', x:0, y:0, moves:{}, win:0},
-  prizesLeft: 0,
+  pizzasLeft: 0,
   players: {},
   getAnswer: {
     violation: (id) => {
@@ -45,6 +45,7 @@ module.exports = {
       'Можешь сделать ещё 1 ход в раунде, если поделишься записью с друзьями. \n' +
       'Раунд заканчивается, когда игрок попадает в ячейку с пиццей, игра начинается заново. В игре 50 раундов. Полные условия по ссылке: \n' +
       '',
+  gameOverText: '50 пицц разыграны, игра окончена!',
   getTokenIndex: function() {
     this.tokenIndex++;
     if (this.tokenIndex > 5) this.tokenIndex = 0;

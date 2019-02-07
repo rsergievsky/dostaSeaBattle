@@ -48,17 +48,20 @@ module.exports = {
       return false;
     }
   },
-  updatePost: async function(msg, attachments, index, captcha) {
+  updatePost: async function(msg, attachments, index, gameOver, captcha) {
 
-    if (env.busyTokens.includes(0)) await env.sleep(10000);
+    if (env.busyTokens.includes(index)) await env.sleep(10000);
     const token = cfg.tokens.users[index];
     try {
-      const res = JSON.parse(await rp.get(`https://api.vk.com/method/wall.edit?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(env.postText)}&attachments=${attachments}&access_token=${token}&captcha=${captcha || ''}&v=5.92`));
+      const req = (!gameOver)
+        ? `https://api.vk.com/method/wall.edit?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(env.postText)}&attachments=${attachments}&access_token=${token}&captcha=${captcha || ''}&v=5.92`
+        : `https://api.vk.com/method/wall.edit?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(env.gameOverText)}&close_comments=1&access_token=${token}&captcha=${captcha || ''}&v=5.92`;
+      const res = JSON.parse(await rp.get(req));
       if (res.error == null || res.error.error_code == '100') return true;
       else if (res.error.error_code == '14') {
-        env.busyTokens[0] = 0;
+        env.busyTokens[index] = index;
         const captchaRes = await anticaptcha.solveCaptcha(res.error);
-        delete env.busyTokens[0];
+        delete env.busyTokens[index];
         return this.updatePost(msg, attachments, index, captchaRes);
       } else {
         console.log(res.error.error_msg);

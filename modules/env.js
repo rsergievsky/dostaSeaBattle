@@ -15,7 +15,7 @@ module.exports = {
   players: {},
   getAnswer: {
     violation: (id) => {
-      console.log(this.players[id]);
+      console.log(this);
       return `${this.players[id].name}, у нас было условие — подписаться на сообщество и поставить лайк.`;
     },
     miss: (id) => {
@@ -23,7 +23,7 @@ module.exports = {
       return `${this.players[id].name}, мимо!\n${repost}`
     },
     busy: function (id) {
-      console.log(this.players[id]);
+      console.log(this);
       const move = this.players[id].moves;
       const movesLeft = `${move} ${this.declOfNum(move, ['ход', 'хода', 'ходов'])}`;
       return `${this.players[id].name}, в эту клетку уже попали! Попробуй ещё раз, у тебя есть ещё ${movesLeft}`;

@@ -61,19 +61,19 @@ module.exports = {
     try {
       const name = await vk.getUserName(id);
       env.players[id] = {name: name, moves: 1, repost: 0};
-      await db.query(`INSERT INTO players (id, moves, repost, \`name\`) VALUES(${id}, 1, 0, "${name}");`);
-      return;
+      await db.query(`INSERT INTO players (id, moves, repost, reposted, \`name\`) VALUES(${id}, 1, 0, 0, "${name}");`);
     } catch(err) { console.log(err); }
   },
   handleRepost: async function(id) {
     if (env.players[id] == null) {
       const name = await vk.getUserName(id);
       env.players[id] = {name: name, moves: 2, repost: 1};
-      await db.query(`INSERT INTO players (id, moves, repost, name) VALUES(${id}, 2, 1, "${name}");`);
+      await db.query(`INSERT INTO players (id, moves, repost, reposted, name) VALUES(${id}, 2, 1, 1, "${name}");`);
     } else if (env.players[id].repost == 0) {
-      env.players[id].moves++;
+      if (!env.players[id].reposted) env.players[id].moves++;
       env.players[id].repost = 1;
-      await db.query(`UPDATE players SET moves=${env.players[id].moves}, repost=1 WHERE id=${id}`);
+      env.players[id].reposted = 1;
+      await db.query(`UPDATE players SET moves=${env.players[id].moves}, repost=1, reposted=1 WHERE id=${id}`);
     }
   },
   startGame: async function() {
@@ -91,7 +91,7 @@ module.exports = {
       env.players = {};
       const players = await db.query(`SELECT * FROM players`);
       for (const player of players) {
-        env.players[player.id] = {name: player.name, moves: player.moves, repost: player.repost};
+        env.players[player.id] = {name: player.name, moves: player.moves, repost: player.repost, reposted: player.reposted};
       }
     }
   },

@@ -54,8 +54,8 @@ module.exports = {
   checkMove: function(e, x, y) {
     if (x == env.game.x && y == env.game.y) {
       this.endGame(e);
-      return env.getAnswer.win(id);
-    } else return env.getAnswer.miss(id);
+      return env.getAnswer.win(e.from_id);
+    } else return env.getAnswer.miss(e.from_id);
   },
   addPlayer: async function(id) {
     if (env.players[id] != null) return;
@@ -78,6 +78,8 @@ module.exports = {
     }
   },
   startGame: async function() {
+    const [{comment:lastWinner}] = await db.query(`SELECT comment FROM winners ORDER BY id DESC LIMIT 1`);
+    env.lastWinner = lastWinner;
     const [{count}] = await db.query(`SELECT COUNT(*) as count FROM games WHERE win=1`);
     if (count > 49) await vk.updatePost(null, env.getTokenIndex(), true);
     else {
@@ -97,12 +99,11 @@ module.exports = {
     }
   },
   endGame: async function(e) {
-    console.log(e);
     env.game.win = 1;
     await db.query(`UPDATE games SET win=1 WHERE id=${env.game.id};`);
     await db.query(`UPDATE players SET moves=1 WHERE repost=0`);
     await db.query(`UPDATE players SET moves=2 WHERE repost=1`);
-    // await db.query(`INSERT INTO winners (user_id, comment) VALUES(${e.from_id}, "https://vk.com/")`);
+    await db.query(`INSERT INTO winners (user_id, user_link, comment) VALUES(${e.from_id}, "https://vk.com/id${e.from_id}", "https://vk.com/wall${e.owner_id}_${e.id}")`);
     await vk.restartAlert();
   },
   createField: async function() {

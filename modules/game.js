@@ -39,7 +39,7 @@ module.exports = {
       await pic.addMoveToField(x, y);
       const {data, index} = await vk.upload(env.game.path);
 
-      await vk.updatePost(data, false, index);
+      await vk.updatePost(data, index, false);
 
       return {msg: moveResult, tokenIndex: tokenIndex, pic: data};
     }
@@ -71,7 +71,7 @@ module.exports = {
   },
   startGame: async function() {
     const [{count}] = await db.query(`SELECT COUNT(*) as count FROM games WHERE win=1`);
-    if (count > 49) await vk.updatePost(null, true, env.tokenIndex);
+    if (count > 49) await vk.updatePost(null, env.tokenIndex, true);
     else {
       env.pizzasLeft = 50 - count;
       const [game] = await db.query(`SELECT * FROM games ORDER BY id DESC LIMIT 1`);

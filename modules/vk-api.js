@@ -71,7 +71,6 @@ module.exports = {
   },
   restartAlert: async function() {
     const res = JSON.parse(await rp.get(`https://api.vk.com/method/wall.createComment?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(env.answers.restart)}&from_group=${env.groupID}&access_token=${cfg.tokens.users[0]}&v=5.92`));
-    console.log(res);
   },
   checkPlayer: async function(user_id) {
     const {response:isMember} = JSON.parse(await rp.get(`https://api.vk.com/method/groups.isMember?group_id=${env.groupID}&user_id=${user_id}&access_token=${cfg.tokens.group}&v=5.92`));
@@ -87,7 +86,13 @@ module.exports = {
     return !!(isMember && isLiked);
   },
   getUserName: async function(user_id) {
-    console.log('no');
+    try {
+      const {response} = JSON.parse(await rp.get(`https://api.vk.com/method/users.get?user_ids=${user_id}&access_token=${cfg.tokens.group}&v=5.92`));
+      if (!response.error) return `${response.first_name} ${response.last_name}`;
+      else throw new Error(response.error.error_msg);
+    } catch(err) {
+      throw new Error(err.message);
+    }
   },
   upload: async function(path) {
 

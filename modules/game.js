@@ -19,13 +19,11 @@ module.exports = {
 
     const check = await vk.checkPlayer(id);
     if (!check) {
-      return {msg:env.answers.violation, tokenIndex:tokenIndex};
+      return {msg:env.answers.violation(id), tokenIndex:tokenIndex};
     } else if (env.players[id].moves === 0) {
-      console.log(env.answers.no_enough_moves);
-      return {msg:env.answers.no_enough_moves, tokenIndex:tokenIndex};
+      return {msg:env.answers.no_enough_moves(id), tokenIndex:tokenIndex};
     } else if (env.game.moves != null && env.game.moves[x] != null && env.game.moves[x].includes(y)) {
-      console.log(env.answers.busy);
-      return {msg:env.answers.busy, tokenIndex:tokenIndex};
+      return {msg:env.answers.busy(id), tokenIndex:tokenIndex};
     } else {
 
       const moveResult = this.checkMove(x, y);
@@ -43,7 +41,7 @@ module.exports = {
 
       await vk.updatePost(`последний ход: x: ${x} y: ${y}`, data);
 
-      return {msg: env.answers[moveResult], tokenIndex: tokenIndex, pic: data};
+      return {msg: env.answers[moveResult][id], tokenIndex: tokenIndex, pic: data};
     }
   },
   checkMove: function(x, y) {
@@ -54,9 +52,10 @@ module.exports = {
   },
   addPlayer: async function(id) {
     if (env.players[id] != null) return;
-    env.players[id] = {moves: 1, repost: 0};
     try {
-      await db.query(`INSERT INTO players (id, moves, repost) VALUES(${id}, 1, 0);`);
+      const name = await vk.getUserName(id);
+      env.players[id] = {name: name, moves: 1, repost: 0};
+      await db.query(`INSERT INTO players (id, moves, repost, \`name\`) VALUES(${id}, 1, 0, "${name}");`);
       return;
     } catch(err) { console.log(err); }
   },
@@ -81,7 +80,7 @@ module.exports = {
     env.players = {};
     const players = await db.query(`SELECT * FROM players`);
     for (const player of players) {
-      env.players[player.id] = {moves: player.moves, repost: player.repost};
+      env.players[player.id] = {name: player.name, moves: player.moves, repost: player.repost};
     }
   },
   endGame: async function() {

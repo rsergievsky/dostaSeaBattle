@@ -26,7 +26,7 @@ module.exports = {
       return {msg:env.getAnswer.busy(id), tokenIndex:tokenIndex};
     } else {
 
-      const moveResult = this.checkMove(x, y);
+      const moveResult = this.checkMove(id, x, y);
 
       env.players[id].moves--;
       await db.query(`UPDATE players SET moves=moves-1 WHERE id=${id}`);
@@ -41,17 +41,14 @@ module.exports = {
 
       await vk.updatePost(`последний ход: x: ${x} y: ${y}`, data);
 
-      console.log(env.getAnswer[moveResult][id]);
-      console.log(env.getAnswer);
-
-      return {msg: env.getAnswer[moveResult][id], tokenIndex: tokenIndex, pic: data};
+      return {msg: moveResult, tokenIndex: tokenIndex, pic: data};
     }
   },
-  checkMove: function(x, y) {
+  checkMove: function(id, x, y) {
     if (x == env.game.x && y == env.game.y) {
       this.endGame();
-      return 'win';
-    } else return 'miss';
+      return env.getAnswer.win(id);
+    } else return env.getAnswer.miss(id);
   },
   addPlayer: async function(id) {
     if (env.players[id] != null) return;

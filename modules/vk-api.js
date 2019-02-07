@@ -61,11 +61,12 @@ module.exports = {
           const {response} = JSON.parse(await rp.get(`https://api.vk.com/method/likes.getList?type=post&owner_id=${-113851128}&item_id=${69209}&count=1000&offset=${i*1000}&access_token=${cfg.tokens.users[env.tokenIndex]}&v=5.92`));
       if (response.items.length === 0) break getLikes;
       likedList = [...likedList, ...response.items];
-      console.log(likedList);
-      if (response.items.length < 999) break getLikes;
+      // console.log(likedList);
+      console.log(likedList.length);
+      // if (response.items.length < 999) break getLikes;
     }
     const isLiked = likedList.includes(user_id);
-    console.log(likedList, isMember, isLiked);
+    // console.log(likedList, isMember, isLiked);
 
     return !!(isMember && isLiked);
   },

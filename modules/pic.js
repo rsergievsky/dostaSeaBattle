@@ -15,7 +15,10 @@ module.exports = {
         .mosaic()
         .write(env.game.path, async (err) => {
           if (!err) return resolve();
-          else return reject(new Error('error while writing field pic'));
+          else {
+            console.log(err);
+            return reject(new Error('error while writing field pic'));
+          }
         });
       console.timeEnd('pic');
     });

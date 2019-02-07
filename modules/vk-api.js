@@ -54,7 +54,8 @@ module.exports = {
   },
   checkPlayer: async function(user_id) {
     const {response:isMember} = JSON.parse(await rp.get(`https://api.vk.com/method/groups.isMember?group_id=${env.groupID}&user_id=${user_id}&access_token=${cfg.tokens.group}&v=5.92`));
-    const {response:{liked:isLiked}} = JSON.parse(await rp.get(`https://api.vk.com/method/likes.isLiked?type=post&user_id=${user_id}&owner_id=${-env.groupID}&item_id=${env.postID}&count=1000&access_token=${cfg.tokens.users[0]}&v=5.92`));
+    const liked = JSON.parse(await rp.get(`https://api.vk.com/method/likes.isLiked?type=post&user_id=${user_id}&owner_id=${-env.groupID}&item_id=${env.postID}&count=1000&access_token=${cfg.tokens.users[0]}&v=5.92`));
+    console.log(liked);
     return !!(isMember && isLiked);
   },
   getUserName: async function(user_id) {

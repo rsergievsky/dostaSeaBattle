@@ -9,7 +9,7 @@ module.exports = {
       gm()
         .in('-page', '+0+0')
         .in(env.game.path)
-        .in('-page', `+${217 + (108 * (x - 1))}+${172 + (108 * (y - 1))}`)
+        .in('-page', `+${446 + (70 * (x - 1))}+${56 + (70 * (y - 1))}`)
         .in(`public/fields/${block}.png`)
         .mosaic()
         .write(env.game.path, async (err) => {

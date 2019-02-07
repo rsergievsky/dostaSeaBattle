@@ -1,11 +1,8 @@
-const db = require('../modules/db'),
-      moment = require('moment'),
-      fs = require('fs');
 
 module.exports = {
   dosta: true,
-  groupID: 160258026,
-  postID: 1878,
+  groupID: 160258026, // 81872253
+  postID: 1878, // ~247711
   answerCD: 5,
   tokenIndex: -1,
   busyTokens: [],

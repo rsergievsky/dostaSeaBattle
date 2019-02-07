@@ -15,12 +15,12 @@ module.exports = {
   players: {},
   getAnswer: {
     violation: (id) => {
-      console.log(module);
-      return `${this.players[id].name}, у нас было условие — подписаться на сообщество и поставить лайк.`;
+      console.log();
+      return `${module.exports.players[id].name}, у нас было условие — подписаться на сообщество и поставить лайк.`;
     },
     miss: (id) => {
-      const repost = (this.players[id].repost) ? `` : `Можешь сделать репост и получишь дополнительный ход в этом раунде, и в каждом следующем у тебя будет 2 хода!`;
-      return `${this.players[id].name}, мимо!\n${repost}`
+      const repost = (module.exports.players[id].name) ? `` : `Можешь сделать репост и получишь дополнительный ход в этом раунде, и в каждом следующем у тебя будет 2 хода!`;
+      return `${module.exports.players[id].name}, мимо!\n${repost}`
     },
     busy: function (id) {
       console.log(this);

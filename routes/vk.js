@@ -33,7 +33,7 @@ module.exports = {
 
       if (x != null && y > 0 && y <= 10 && letters.length === 1) {
         await game.addPlayer(e.from_id);
-        const move = await game.makeMove(e.from_id, x, y);
+        const move = await game.makeMove(e, x, y);
         await db.addAnswer(e.from_id, e.id, move.msg, move.pic, move.tokenIndex);
       }
     }

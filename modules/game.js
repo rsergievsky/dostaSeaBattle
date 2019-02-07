@@ -8,9 +8,10 @@ const env = require('./env'),
 const xMoves = ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'К'];
 
 module.exports = {
-  makeMove: async function(id, x, y) {
+  makeMove: async function(e, x, y) {
 
-    // x = x.toUpperCase().charCodeAt(0) - 1039;
+    const id = e.from_id;
+
     x = xMoves.indexOf(x.toUpperCase()) + 1;
 
     if (env.game.win) await this.startGame();
@@ -32,7 +33,7 @@ module.exports = {
       return {msg:env.getAnswer.busy(id), tokenIndex:tokenIndex};
     } else {
 
-      const moveResult = this.checkMove(id, x, y);
+      const moveResult = this.checkMove(e, x, y);
 
       env.players[id].moves--;
       await db.query(`UPDATE players SET moves=moves-1 WHERE id=${id}`);
@@ -50,9 +51,9 @@ module.exports = {
       return {msg: moveResult, tokenIndex: tokenIndex, pic: data};
     }
   },
-  checkMove: function(id, x, y) {
+  checkMove: function(e, x, y) {
     if (x == env.game.x && y == env.game.y) {
-      this.endGame();
+      this.endGame(e);
       return env.getAnswer.win(id);
     } else return env.getAnswer.miss(id);
   },
@@ -95,11 +96,13 @@ module.exports = {
       }
     }
   },
-  endGame: async function() {
+  endGame: async function(e) {
+    console.log(e);
     env.game.win = 1;
     await db.query(`UPDATE games SET win=1 WHERE id=${env.game.id};`);
     await db.query(`UPDATE players SET moves=1 WHERE repost=0`);
     await db.query(`UPDATE players SET moves=2 WHERE repost=1`);
+    // await db.query(`INSERT INTO winners (user_id, comment) VALUES(${e.from_id}, "https://vk.com/")`);
     await vk.restartAlert();
   },
   createField: async function() {

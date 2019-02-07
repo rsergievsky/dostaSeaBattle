@@ -62,8 +62,7 @@ module.exports = {
       if (response.items.length === 0) break getLikes;
       likedList = [...likedList, ...response.items];
       // console.log(likedList);
-      console.log(likedList.length);
-      // if (response.items.length < 999) break getLikes;
+      if (response.items.length < 1000) break getLikes;
     }
     const isLiked = likedList.includes(user_id);
     // console.log(likedList, isMember, isLiked);

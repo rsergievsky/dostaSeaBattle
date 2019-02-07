@@ -41,6 +41,9 @@ module.exports = {
 
       await vk.updatePost(`последний ход: x: ${x} y: ${y}`, data);
 
+      console.log(env.getAnswer[moveResult][id]);
+      console.log(env.getAnswer);
+
       return {msg: env.getAnswer[moveResult][id], tokenIndex: tokenIndex, pic: data};
     }
   },

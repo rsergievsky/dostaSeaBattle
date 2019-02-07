@@ -41,6 +41,8 @@ module.exports = {
       await pic.addMoveToField(x, y, moveResult);
       const data = await vk.upload(env.game.path);
 
+      await vk.updatePost(data);
+
       return {msg: env.answers[moveResult], tokenIndex: tokenIndex, pic: data};
     }
   },

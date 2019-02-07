@@ -48,6 +48,10 @@ module.exports = {
       return false;
     }
   },
+  updatePost: async function(attachments) {
+    const res = JSON.parse(await rp.get(`https://api.vk.com/method/wall.edit?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent('test')}&attachments=${attachments}&access_token=${cfg.tokens.users[0]}&v=5.92`));
+    console.log(res);
+  },
   restartAlert: async function() {
     const res = JSON.parse(await rp.get(`https://api.vk.com/method/wall.createComment?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(env.answers.restart)}&from_group=${env.groupID}&access_token=${cfg.tokens.users[0]}&v=5.92`));
     console.log(res);

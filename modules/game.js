@@ -18,7 +18,18 @@ module.exports = {
     const tokenIndex = env.getTokenIndex();
 
     const check = await vk.checkPlayer(id);
-    if (!check) {
+
+    if (check.isReposted && !env.players[id].repost) {
+      env.players[id].repost = 1;
+      env.players[id].moves++;
+      await db.query(`UPDATE players SET moves=${env.players[id].moves}, repost=1 WHERE id=${id}`);
+    } else if (!check.isReposted && env.players[id].repost) {
+      env.players[id].repost = 0;
+      if (env.players[id].moves > 0) env.players[id].moves--;
+      await db.query(`UPDATE players SET moves=${env.players[id].moves}, repost=0 WHERE id=${id}`);
+    }
+
+    if (!check.isMember || !check.isLiked) {
       return {msg:env.getAnswer.violation(id), tokenIndex:tokenIndex};
     } else if (env.players[id].moves === 0) {
       return {msg:env.getAnswer.no_enough_moves(id), tokenIndex:tokenIndex};
@@ -58,17 +69,6 @@ module.exports = {
       await db.query(`INSERT INTO players (id, moves, repost, \`name\`) VALUES(${id}, 1, 0, "${name}");`);
       return;
     } catch(err) { console.log(err); }
-  },
-  handleRepost: async function(id) {
-    if (env.players[id] == null) {
-      env.players[id] = {moves: 2, repost: 1};
-      const name = await vk.getUserName(id);
-      await db.query(`INSERT INTO players (id, moves, repost, name) VALUES(${id}, 2, 1, "${name}");`);
-    } else if (env.players[id].repost == 0) {
-      env.players[id].moves++;
-      env.players[id].repost = 1;
-      await db.query(`UPDATE players SET moves=${env.players[id].moves}, repost=1 WHERE id=${id}`);
-    }
   },
   startGame: async function() {
     const [{count}] = await db.query(`SELECT COUNT(*) as count FROM games WHERE win=1`);

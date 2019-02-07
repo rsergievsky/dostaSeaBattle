@@ -15,13 +15,15 @@ module.exports = {
   players: {},
   getAnswer: {
     violation: (id) => {
+      console.log(this.players[id]);
       return `${this.players[id].name}, у нас было условие — подписаться на сообщество и поставить лайк.`;
     },
     miss: (id) => {
       const repost = (this.players[id].repost) ? `` : `Можешь сделать репост и получишь дополнительный ход в этом раунде, и в каждом следующем у тебя будет 2 хода!`;
       return `${this.players[id].name}, мимо!\n${repost}`
     },
-    busy: (id) => {
+    busy: function (id) {
+      console.log(this.players[id]);
       const move = this.players[id].moves;
       const movesLeft = `${move} ${this.declOfNum(move, ['ход', 'хода', 'ходов'])}`;
       return `${this.players[id].name}, в эту клетку уже попали! Попробуй ещё раз, у тебя есть ещё ${movesLeft}`;

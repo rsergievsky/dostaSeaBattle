@@ -71,7 +71,7 @@ module.exports = {
   },
   startGame: async function() {
     const [{count}] = await db.query(`SELECT COUNT(*) as count FROM games WHERE win=1`);
-    if (count > 0) await vk.updatePost(null, 0, true);
+    if (count > 49) await vk.updatePost(null, env.getTokenIndex(), true);
     else {
       env.pizzasLeft = 50 - count;
       const [game] = await db.query(`SELECT * FROM games ORDER BY id DESC LIMIT 1`);

@@ -56,11 +56,13 @@ module.exports = {
     const {response:isMember} = JSON.parse(await rp.get(`https://api.vk.com/method/groups.isMember?group_id=${env.groupID}&user_id=${user_id}&access_token=${cfg.tokens.group}&v=5.92`));
     let likedList = [];
     getLikes: for (let i = 0; i < 10; i++) {
-      const {response} = JSON.parse(await rp.get(`https://api.vk.com/method/likes.getList?type=post&owner_id=${-env.groupID}&item_id=${env.postID}&count=1&offset=${i}&access_token=${cfg.tokens.users[env.tokenIndex]}&v=5.92`));
+      console.log(i);
+      // const {response} = JSON.parse(await rp.get(`https://api.vk.com/method/likes.getList?type=post&owner_id=${-env.groupID}&item_id=${env.postID}&count=1000&offset=${i*1000}&access_token=${cfg.tokens.users[env.tokenIndex]}&v=5.92`));
+          const {response} = JSON.parse(await rp.get(`https://api.vk.com/method/likes.getList?type=post&owner_id=${-113851128}&item_id=${69209}&count=1000&offset=${i*1000}&access_token=${cfg.tokens.users[env.tokenIndex]}&v=5.92`));
       if (response.items.length === 0) break getLikes;
       likedList = [...likedList, ...response.items];
       console.log(likedList);
-      if (response.items.length < 1) break getLikes;
+      if (response.items.length < 999) break getLikes;
     }
     const isLiked = likedList.includes(user_id);
     console.log(likedList, isMember, isLiked);

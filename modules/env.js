@@ -7,7 +7,7 @@ module.exports = {
   groupID: 160258026,
   postID: 1878,
   answerCD: 5,
-  tokenIndex: -1,
+  tokenIndex: 0,
   busyTokens: [],
   catpchas: [],
   game: {id:0, path:'', x:0, y:0, moves:{}, win:0},
@@ -46,7 +46,7 @@ module.exports = {
       'Раунд заканчивается, когда игрок попадает в ячейку с пиццей, игра начинается заново. В игре 50 раундов. Полные условия по ссылке',
   getTokenIndex: function() {
     this.tokenIndex++;
-    if (this.tokenIndex > 0) this.tokenIndex = 0;
+    if (this.tokenIndex > 5) this.tokenIndex = 1;
     return this.tokenIndex;
   },
   declOfNum: function (number, titles) {

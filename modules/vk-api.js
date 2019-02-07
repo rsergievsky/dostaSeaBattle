@@ -88,8 +88,7 @@ module.exports = {
   getUserName: async function(user_id) {
     try {
       const {response} = JSON.parse(await rp.get(`https://api.vk.com/method/users.get?user_ids=${user_id}&access_token=${cfg.tokens.group}&v=5.92`));
-      console.log(response);
-      if (!response.error) return `${response.first_name} ${response.last_name}`;
+      if (!response.error) return `${response[0].first_name} ${response[0].last_name}`;
       else throw new Error(response.error.error_msg);
     } catch(err) {
       throw new Error(err.message);

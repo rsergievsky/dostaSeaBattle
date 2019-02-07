@@ -19,11 +19,11 @@ module.exports = {
 
     const check = await vk.checkPlayer(id);
     if (!check) {
-      return {msg:env.answers.violation(id), tokenIndex:tokenIndex};
+      return {msg:env.getAnswer.violation(id), tokenIndex:tokenIndex};
     } else if (env.players[id].moves === 0) {
-      return {msg:env.answers.no_enough_moves(id), tokenIndex:tokenIndex};
+      return {msg:env.getAnswer.no_enough_moves(id), tokenIndex:tokenIndex};
     } else if (env.game.moves != null && env.game.moves[x] != null && env.game.moves[x].includes(y)) {
-      return {msg:env.answers.busy(id), tokenIndex:tokenIndex};
+      return {msg:env.getAnswer.busy(id), tokenIndex:tokenIndex};
     } else {
 
       const moveResult = this.checkMove(x, y);
@@ -41,7 +41,7 @@ module.exports = {
 
       await vk.updatePost(`последний ход: x: ${x} y: ${y}`, data);
 
-      return {msg: env.answers[moveResult][id], tokenIndex: tokenIndex, pic: data};
+      return {msg: env.getAnswer[moveResult][id], tokenIndex: tokenIndex, pic: data};
     }
   },
   checkMove: function(x, y) {

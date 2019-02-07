@@ -70,7 +70,7 @@ module.exports = {
     }
   },
   restartAlert: async function() {
-    const res = JSON.parse(await rp.get(`https://api.vk.com/method/wall.createComment?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(env.answers.restart)}&from_group=${env.groupID}&access_token=${cfg.tokens.users[0]}&v=5.92`));
+    const res = JSON.parse(await rp.get(`https://api.vk.com/method/wall.createComment?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(env.getAnswer.restart)}&from_group=${env.groupID}&access_token=${cfg.tokens.users[0]}&v=5.92`));
   },
   checkPlayer: async function(user_id) {
     const {response:isMember} = JSON.parse(await rp.get(`https://api.vk.com/method/groups.isMember?group_id=${env.groupID}&user_id=${user_id}&access_token=${cfg.tokens.group}&v=5.92`));

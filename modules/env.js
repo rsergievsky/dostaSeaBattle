@@ -13,24 +13,24 @@ module.exports = {
   game: {id:0, path:'', x:0, y:0, moves:{}, win:0},
   prizesLeft: 0,
   players: {},
-  answers: {
-    violation: function(id) {
+  getAnswer: {
+    violation: (id) => {
       return `${this.players[id].name}, у нас было условие — подписаться на сообщество и поставить лайк.`;
     },
-    miss: function(id) {
+    miss: (id) => {
       const repost = (this.players[id].repost) ? `` : `Можешь сделать репост и получишь дополнительный ход в этом раунде, и в каждом следующем у тебя будет 2 хода!`;
       return `${this.players[id].name}, мимо!\n${repost}`
     },
-    busy: function(id) {
+    busy: (id) => {
       const move = this.players[id].moves;
       const movesLeft = `${move} ${this.declOfNum(move, ['ход', 'хода', 'ходов'])}`;
       return `${this.players[id].name}, в эту клетку уже попали! Попробуй ещё раз, у тебя есть ещё ${movesLeft}`;
     },
-    no_enough_moves: function(id) {
+    no_enough_moves: (id) => {
       const repost = (this.players[id].repost) ? `` : `Но ты можешь сделать репост и получишь дополнительный ход в этом раунде, и в каждом следующем у тебя будет 2 хода!`;
       return `${this.players[id].name}, у тебя не осталось ходов. :c\n${repost}`;
     },
-    win: function(id) {
+    win: (id) => {
       return `${this.players[id].name}, точно в цель. Забирай свою пиццу! 🍕`;
     },
     restart: `Раунд закончился! Начинаем новый :)`

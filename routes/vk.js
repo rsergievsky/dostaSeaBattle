@@ -16,6 +16,8 @@ module.exports = {
 
     if (type === 'wall_repost') {
 
+      console.log(e);
+
       await game.handleRepost(e.from_id);
 
     } else if (type === 'wall_reply_new' && e.post_id == env.postID && e.from_id > 0) {

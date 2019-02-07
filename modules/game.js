@@ -39,7 +39,7 @@ module.exports = {
       await pic.addMoveToField(x, y);
       const {data, index} = await vk.upload(env.game.path);
 
-      await vk.updatePost(`последний ход: x: ${x} y: ${y}`, data, index);
+      await vk.updatePost(data, false, index);
 
       return {msg: moveResult, tokenIndex: tokenIndex, pic: data};
     }
@@ -71,18 +71,21 @@ module.exports = {
   },
   startGame: async function() {
     const [{count}] = await db.query(`SELECT COUNT(*) as count FROM games WHERE win=1`);
-    console.log(count);
-    const [game] = await db.query(`SELECT * FROM games ORDER BY id DESC LIMIT 1`);
-    if (game == null || game.win) {
-      await this.createField();
-      return this.startGame();
-    }
-    env.game = game;
-    env.game.moves = JSON.parse(game.moves);
-    env.players = {};
-    const players = await db.query(`SELECT * FROM players`);
-    for (const player of players) {
-      env.players[player.id] = {name: player.name, moves: player.moves, repost: player.repost};
+    if (count > 49) await vk.updatePost(null, true, env.tokenIndex);
+    else {
+      env.pizzasLeft = 50 - count;
+      const [game] = await db.query(`SELECT * FROM games ORDER BY id DESC LIMIT 1`);
+      if (game == null || game.win) {
+        await this.createField();
+        return this.startGame();
+      }
+      env.game = game;
+      env.game.moves = JSON.parse(game.moves);
+      env.players = {};
+      const players = await db.query(`SELECT * FROM players`);
+      for (const player of players) {
+        env.players[player.id] = {name: player.name, moves: player.moves, repost: player.repost};
+      }
     }
   },
   endGame: async function() {

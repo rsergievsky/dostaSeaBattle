@@ -48,7 +48,7 @@ module.exports = {
       return false;
     }
   },
-  updatePost: async function(msg, attachments, index, gameOver, captcha) {
+  updatePost: async function(attachments, index, gameOver, captcha) {
 
     if (env.busyTokens.includes(index)) await env.sleep(10000);
     const token = cfg.tokens.users[index];

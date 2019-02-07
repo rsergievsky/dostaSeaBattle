@@ -14,9 +14,7 @@ module.exports = {
 
     const { type:type, object:e } = req.body;
 
-    if (type === 'wall_repost') {
-
-      console.log(e);
+    if (type === 'wall_repost' && e.copy_history[0].id == env.postID) {
 
       await game.handleRepost(e.from_id);
 

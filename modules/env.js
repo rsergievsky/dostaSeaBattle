@@ -15,7 +15,7 @@ module.exports = {
   players: {},
   getAnswer: {
     violation: (id) => {
-      console.log(this.module);
+      console.log(module);
       return `${this.players[id].name}, у нас было условие — подписаться на сообщество и поставить лайк.`;
     },
     miss: (id) => {

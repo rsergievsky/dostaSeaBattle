@@ -21,11 +21,11 @@ module.exports = {
     if (check.isReposted && !env.players[id].repost) {
       env.players[id].moves++;
       env.players[id].repost = 1;
-      await db.query(`UPDATE players SET moves=${env.players.moves}, repost=1 WHERE id=${id}`);
+      await db.query(`UPDATE players SET moves=${env.players[id].moves}, repost=1 WHERE id=${id}`);
     } else if (!check.isReposted && env.players[id].repost) {
       if (env.players[id].moves > 0) env.players[id].moves--;
       env.players[id].repost = 0;
-      await db.query(`UPDATE players SET moves=${env.players.moves}, repost=0 WHERE id=${id}`);
+      await db.query(`UPDATE players SET moves=${env.players[id].moves}, repost=0 WHERE id=${id}`);
     }
 
     if (!check.isLiked || !check.isMember) {

@@ -22,7 +22,6 @@ module.exports = {
       return `${module.exports.players[id].name}, мимо!\n${repost}`
     },
     busy: function (id) {
-      console.log(this);
       const move = module.exports.players[id].moves;
       const movesLeft = `${move} ${module.exports.declOfNum(move, ['ход', 'хода', 'ходов'])}`;
       return `${module.exports.players[id].name}, в эту клетку уже попали! Попробуй ещё раз, у тебя есть ещё ${movesLeft}`;

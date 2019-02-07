@@ -54,12 +54,15 @@ module.exports = {
   },
   checkPlayer: async function(user_id) {
     const {response:isMember} = JSON.parse(await rp.get(`https://api.vk.com/method/groups.isMember?group_id=${env.groupID}&user_id=${user_id}&access_token=${cfg.tokens.group}&v=5.92`));
-    // const liked = JSON.parse(await rp.get(`https://api.vk.com/method/likes.isLiked?type=post&user_id=${user_id}&owner_id=${-env.groupID}&item_id=${env.postID}&count=1000&access_token=${cfg.tokens.users[0]}&v=5.92`));
-    const likedList = JSON.parse(await rp.get(`https://api.vk.com/method/likes.getList?type=post&owner_id=${-env.groupID}&item_id=${env.postID}&count=1000&access_token=${cfg.tokens.users[env.tokenIndex]}&v=5.92`));
-    const likedList2 = JSON.parse(await rp.get(`https://api.vk.com/method/likes.getList?type=post&owner_id=${-env.groupID}&item_id=${env.postID}&count=1000&offset=100&access_token=${cfg.tokens.users[env.tokenIndex]}&v=5.92`));
-    console.log(isMember);
-    console.log(likedList);
-    console.log(likedList2);
+    let likedList = [];
+    getLikes: for (const i = 0; i < 10; i++) {
+      const {response} = JSON.parse(await rp.get(`https://api.vk.com/method/likes.getList?type=post&owner_id=${-env.groupID}&item_id=${env.postID}&count=1000&offset=${i*1000}&access_token=${cfg.tokens.users[env.tokenIndex]}&v=5.92`));
+      if (response.items.length === 0) break getLikes;
+      likedList.push(response.items);
+    }
+    const isLiked = likedList.includes(user_id);
+    console.log(likedList, isMember, isLiked);
+
     return !!(isMember && isLiked);
   },
   getUserName: async function(user_id) {

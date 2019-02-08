@@ -86,20 +86,20 @@ module.exports = {
     }
     const isLiked = likedList.includes(user_id);
 
-    let repostedList = [];
-    getReposts: for (let i = 0; i < 15; i++) {
-      const {response} = JSON.parse(await rp.get(`https://api.vk.com/method/wall.getReposts?&owner_id=${-env.groupID}&post_id=${env.postID}&count=1000&offset=${i*1000}&access_token=${cfg.tokens.users[env.tokenIndex]}&v=5.92`));
-      if (response.profiles == null || response.profiles.length === 0) break getReposts;
-      for (const profile of response.profiles) {
-        repostedList.push(profile.id);
-      }
-      if (response.items.length < 1000) break getReposts;
-    }
-
-    const isReposted = repostedList.includes(user_id);
+    // let repostedList = [];
+    // getReposts: for (let i = 0; i < 15; i++) {
+    //   const {response} = JSON.parse(await rp.get(`https://api.vk.com/method/wall.getReposts?&owner_id=${-env.groupID}&post_id=${env.postID}&count=1000&offset=${i*1000}&access_token=${cfg.tokens.users[env.tokenIndex]}&v=5.92`));
+    //   if (response.profiles == null || response.profiles.length === 0) break getReposts;
+    //   for (const profile of response.profiles) {
+    //     repostedList.push(profile.id);
+    //   }
+    //   if (response.items.length < 1000) break getReposts;
+    // }
+    //
+    // const isReposted = repostedList.includes(user_id);
 
     // return !!(isMember && isLiked);
-    return {isMember: isMember, isLiked: isLiked, isReposted: isReposted};
+    return {isMember: isMember, isLiked: isLiked}; //  isReposted: isReposted
   },
   getUserName: async function(user_id) {
     try {

@@ -27,10 +27,14 @@ module.exports = {
    */
 
   reply: async function(answer) {
-    if (env.busyTokens.includes(answer.token_index)) await env.sleep(15000);
+    if (env.busyTokens.includes(answer.token_index)) await env.sleep(10000);
     const token = cfg.tokens.users[answer.token_index];
     const captcha = answer.captcha || '';
     try {
+
+      const [row] = await db.query(`SELECT * FROM answers WHERE id=${answer.id}`);
+      if (!row) return false;
+
       const res = JSON.parse(await rp.get(`https://api.vk.com/method/wall.createComment?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(answer.message)}&from_group=${env.groupID}&attachments=${answer.attachments}&reply_to_comment=${answer.comment_id}&access_token=${token}${captcha}&v=5.92`));
       if (res.error == null || res.error.error_code == '100') {
         delete env.busyTokens[answer.token_index];

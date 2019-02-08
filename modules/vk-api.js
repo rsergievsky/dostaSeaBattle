@@ -61,7 +61,7 @@ module.exports = {
         env.busyTokens[index] = index;
         const captchaRes = await anticaptcha.solveCaptcha(res.error);
         delete env.busyTokens[index];
-        return this.updatePost(msg, attachments, index, captchaRes);
+        return this.updatePost(attachments, index, gameOver, captchaRes);
       } else {
         console.log(res.error.error_msg);
         return false;

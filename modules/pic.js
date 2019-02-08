@@ -5,6 +5,11 @@ module.exports = {
   addMoveToField: async function (x, y) {
     const block = (x == env.game.x && y == env.game.y) ? 'win' : 'miss';
     return new Promise(async (resolve, reject) => {
+      wait: for (let i = 0; i < 200; i++) {
+        if (env.picRender === 1) await env.sleep(10);
+        else break wait;
+      }
+      env.picRender = 1;
       console.time('pic');
       gm()
         .in('-page', '+0+0')
@@ -13,6 +18,7 @@ module.exports = {
         .in(`public/fields/${block}.png`)
         .mosaic()
         .write(env.game.path, async (err) => {
+          env.picRender = 0;
           if (!err) return resolve();
           else {
             console.log(err);

@@ -3,6 +3,7 @@ module.exports = {
   dosta: true,
   groupID: 81872253, // 160258026, 81872253
   postID: 247790, // ~247711
+  picRender: 0,
   answerCD: 5,
   tokenIndex: -1,
   busyTokens: [],

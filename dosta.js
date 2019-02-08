@@ -8,6 +8,10 @@ const express = require('express'),
 
 process.on('SIGINT', async () => {
   console.log('\nimmediate exit');
+  wait: for (let i = 0; i < 200; i++) {
+    if (env.picRender === 1) await env.sleep(10);
+    else break wait;
+  }
   await db.closeConnection();
   process.exit();
 });

@@ -15,7 +15,6 @@ module.exports = {
       const [answer] = await db.query(`SELECT * FROM answers LIMIT 1`);
       if (answer) {
         const success = await vk.reply(answer);
-        console.log(`${answer.id} - ${success}`);
       }
     }, null, true);
   },

@@ -32,7 +32,7 @@ module.exports = {
     try {
 
       const [row] = await db.query(`SELECT * FROM answers WHERE id=${answer.id}`);
-      if (!row) {
+      if (!row || row.in_queue == 1) {
         delete env.busyTokens[answer.token_index];
         return true;
       }

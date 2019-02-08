@@ -14,6 +14,7 @@ module.exports = {
       /** answer queue */
       const [answer] = await db.query(`SELECT * FROM answers LIMIT 1`);
       if (answer) {
+        await db.query(`UPDATE answers SET in_queue=1 WHERE id=${answer.id}`);
         const success = await vk.reply(answer);
         console.log(`${answer.id} - ${success}`);
         if (success === true) await db.query(`DELETE FROM answers WHERE id=${answer.id}`);

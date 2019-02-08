@@ -15,7 +15,7 @@ module.exports = {
       const [answer] = await db.query(`SELECT * FROM answers LIMIT 1`);
       if (answer) {
         const success = await vk.reply(answer);
-        console.log(success);
+        console.log(`${answer.id} - ${success}`);
         if (success === 1) await db.query(`DELETE FROM answers WHERE id=${answer.id}`);
       }
     }, null, true);

@@ -1,8 +1,8 @@
 
 module.exports = {
   dosta: true,
-  groupID: 160258026, // 81872253
-  postID: 1878, // ~247711
+  groupID: 81872253, // 160258026, 81872253
+  postID: 247784, // ~247711
   answerCD: 5,
   tokenIndex: -1,
   busyTokens: [],

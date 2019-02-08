@@ -27,7 +27,6 @@ module.exports = {
    */
 
   reply: async function(answer) {
-    console.log(env.busyTokens, answer.token_index);
     if (env.busyTokens.includes(answer.token_index)) await env.sleep(15000);
     const token = cfg.tokens.users[answer.token_index];
     const captcha = answer.captcha || '';
@@ -41,7 +40,7 @@ module.exports = {
         console.log(`[${answer.token_index}] captcha blyad!`);
         env.busyTokens[answer.token_index] = answer.token_index;
         answer.captcha = await anticaptcha.solveCaptcha(res.error);
-        return false;
+        return this.reply(answer);
       } else {
         console.log(res.error.error_msg);
         return false;

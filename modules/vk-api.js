@@ -32,12 +32,14 @@ module.exports = {
     const captcha = answer.captcha || '';
     try {
       const res = JSON.parse(await rp.get(`https://api.vk.com/method/wall.createComment?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(answer.message)}&from_group=${env.groupID}&attachments=${answer.attachments}&reply_to_comment=${answer.comment_id}&access_token=${token}${captcha}&v=5.92`));
-      if (res.error == null || res.error.error_code == '100') return true;
+      if (res.error == null || res.error.error_code == '100') {
+        delete env.busyTokens[answer.token_index];
+        return true;
+      }
       else if (res.error.error_code == '14') {
         console.log(`[${answer.token_index}] captcha blyad!`);
         env.busyTokens[answer.token_index] = answer.token_index;
         answer.captcha = await anticaptcha.solveCaptcha(res.error);
-        delete env.busyTokens[answer.token_index];
         return false;
       } else {
         console.log(res.error.error_msg);

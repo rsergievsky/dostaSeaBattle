@@ -31,11 +31,7 @@ module.exports = {
     const captcha = answer.captcha || '';
     try {
 
-      // const [row] = await db.query(`SELECT * FROM answers WHERE id=${answer.id}`);
-      // if (!row) {
-      //   delete env.busyTokens[answer.token_index];
-      //   return true;
-      // }
+      await db.query(`DELETE FROM answers WHERE id=${answer.id}`);
 
       if (env.busyTokens.includes(answer.token_index)) await env.sleep(10000);
 

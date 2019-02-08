@@ -10,10 +10,6 @@ const env = require('../modules/env'),
 module.exports = {
   callback: async function(req, res) {
 
-    res.send('3bec38af');
-
-    return;
-
     const { type:type, object:e } = req.body;
 
     if (type === 'wall_repost' && e.copy_history[0].id == env.postID) {

@@ -81,9 +81,9 @@ module.exports = {
     const [row] = await db.query(`SELECT * FROM winners ORDER BY id DESC LIMIT 1`);
     env.lastWinner = (row && row.comment) ? row.comment : '-';
     const [{count}] = await db.query(`SELECT COUNT(*) as count FROM games WHERE win=1`);
-    if (count > 49) await vk.updatePost(null, env.getTokenIndex(), true);
+    if (count > 50) await vk.updatePost(null, env.getTokenIndex(), true);
     else {
-      env.pizzasLeft = 50 - count;
+      env.pizzasLeft = 51 - count;
       const [game] = await db.query(`SELECT * FROM games ORDER BY id DESC LIMIT 1`);
       if (game == null || game.win) {
         await this.createField();

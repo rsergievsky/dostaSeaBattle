@@ -47,7 +47,7 @@ module.exports = {
     'http://vk.com/@dostaevsky_ru-picca-boi \n' +
     `Последний победитель: ${module.exports.lastWinner}`;
   },
-  gameOverText: '50 пицц разыграны, игра окончена!',
+  gameOverText: 'Бой окончен. Поздравляем победителей, до конца дня свяжемся с вами и вручим заслуженную награду! А те, кто в этот раз промахнулся, не переживаем и ждём следующего конкурсного поста.',
   getTokenIndex: function() {
     this.tokenIndex++;
     if (this.tokenIndex > 5) this.tokenIndex = 0;

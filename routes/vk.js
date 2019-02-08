@@ -33,7 +33,7 @@ module.exports = {
 
       if (x != null && y > 0 && y <= 10 && letters.length === 1) {
 
-        console.log(e.from_id, e.post_id, x, y);
+        console.log(`${e.from_id} - https://vk.com/wall-${env.groupID}_${e.post_id} ${x}:${y}`);
 
         await game.addPlayer(e.from_id);
         const move = await game.makeMove(e, x, y);

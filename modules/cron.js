@@ -16,7 +16,7 @@ module.exports = {
       if (answer) {
         const success = await vk.reply(answer);
         console.log(success);
-        if (success === true) await db.query(`DELETE FROM answers WHERE id=${answer.id}`);
+        if (success === 1) await db.query(`DELETE FROM answers WHERE id=${answer.id}`);
       }
     }, null, true);
   },

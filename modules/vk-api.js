@@ -32,7 +32,7 @@ module.exports = {
     const captcha = answer.captcha || '';
     try {
       const res = JSON.parse(await rp.get(`https://api.vk.com/method/wall.createComment?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(answer.message)}&from_group=${env.groupID}&attachments=${answer.attachments}&reply_to_comment=${answer.comment_id}&access_token=${token}${captcha}&v=5.92`));
-      if (res.error == null || res.error.error_code == '100') return true;
+      if (res.error == null || res.error.error_code == '100') return 1;
       else if (res.error.error_code == '14') {
         console.log(`[${answer.token_index}] captcha blyad!`);
         env.busyTokens[answer.token_index] = answer.token_index;
@@ -41,11 +41,11 @@ module.exports = {
         return this.reply(answer);
       } else {
         console.log(res.error.error_msg);
-        return false;
+        return 0;
       }
     } catch(err) {
       console.log(err.message);
-      return false;
+      return 0;
     }
   },
   updatePost: async function(attachments, index, gameOver, captcha) {

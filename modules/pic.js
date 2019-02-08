@@ -24,3 +24,21 @@ module.exports = {
   }
 }
 
+
+let i = 0;
+
+function rec() {
+  const bool = test();
+  console.log(bool);
+}
+
+
+function test() {
+  if (i < 3) {
+    i++;
+    return test();
+  }
+  return true;
+}
+
+

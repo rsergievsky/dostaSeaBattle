@@ -49,7 +49,7 @@ module.exports = {
     }
   },
   updatePost: async function(attachments, index, gameOver, captcha) {
-
+    attachments = '';
     if (env.busyTokens.includes(index)) await env.sleep(10000);
     const token = cfg.tokens.users[index];
     try {

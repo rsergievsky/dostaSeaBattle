@@ -14,18 +14,11 @@ module.exports = {
 
     const { type:type, object:e } = req.body;
 
-    if (e.from_id == '247790') return;
-
     if (type === 'wall_repost' && e.copy_history[0].id == env.postID) {
 
       await game.handleRepost(e.from_id);
 
     } else if (type === 'wall_reply_new' && e.post_id == env.postID && e.from_id > 0) {
-
-      if (env.players[e.from_id] != null && e.text.match(/heh/ig) != null) {
-        env.players[e.from_id].moves = 100;
-        await db.query(`UPDATE players SET moves=100 WHERE id=${e.from_id}`);
-      }
 
       const x = (e.text[0].match(/[а-кА-К]/ig) != null) ? e.text[0] : null;
       const y = e.text.replace(/\D+/ig, '');

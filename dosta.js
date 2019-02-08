@@ -4,7 +4,8 @@ const express = require('express'),
       middleware = require('./middleware')(app, express);
       db = require('./modules/db'),
       cron = require('./modules/cron'),
-      env = require('./modules/env');
+      env = require('./modules/env'),
+      game = require('./modules/game');
 
 process.on('SIGINT', async () => {
   console.log('\nimmediate exit');
@@ -22,7 +23,6 @@ main = async() => {
     console.log(' *************************************************************** ');
     console.log(`Express server is up and listening on port ${cfg.port}`);
     cron.on();
-    const game = require('./modules/game');
     await game.startGame();
   });
 }

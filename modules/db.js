@@ -1,7 +1,5 @@
 const cfg = require('../config/config.json'),
-    Sequelize = require('sequelize'),
-    moment = require('moment'),
-    env = require('./env');
+      Sequelize = require('sequelize');
 
 
 const sequelize = new Sequelize(cfg.db.db, cfg.db.usr, cfg.db.pwd, {

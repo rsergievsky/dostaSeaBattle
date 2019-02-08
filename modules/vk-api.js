@@ -43,6 +43,7 @@ module.exports = {
         ? `https://api.vk.com/method/wall.edit?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(env.postText())}&attachments=${attachments}&access_token=${token}&captcha=${captcha || ''}&v=5.92`
         : `https://api.vk.com/method/wall.edit?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(env.gameOverText)}&close_comments=1&access_token=${token}&captcha=${captcha || ''}&v=5.92`;
       const res = JSON.parse(await rp.get(req));
+      if (gameOver) await rp.get(`https://api.vk.com/method/wall.createComment?owner_id=${-env.groupID}&post_id=${env.postID}&message=${encodeURIComponent(env.gameOverText)}&from_group=${env.groupID}&access_token=${cfg.tokens.users[0]}&v=5.92`);
       if (res.error == null || res.error.error_code == '100') return true;
       else if (res.error.error_code == '14') {
         env.busyTokens[index] = index;
